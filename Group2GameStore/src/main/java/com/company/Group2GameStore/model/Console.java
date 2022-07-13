@@ -6,7 +6,7 @@ import javax.persistence.*;
 import java.util.Objects;
 
 @Entity
-@JsonIgnoreProperties({"hibernateLazyInitializer", "hande"})
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "console")
 public class Console {
 
@@ -97,13 +97,16 @@ public class Console {
         return Objects.hash(id, model, manufacturer, memoryAmount, processor, price, quantity);
     }
 
-    public Console(int id, String model, String manufacturer, String memoryAmount, String processor, Double price, int quantity) {
-        this.id = id;
-        this.model = model;
-        this.manufacturer = manufacturer;
-        this.memoryAmount = memoryAmount;
-        this.processor = processor;
-        this.price = price;
-        this.quantity = quantity;
+    @Override
+    public String toString() {
+        return "Console{" +
+                "id=" + id +
+                ", model='" + model + '\'' +
+                ", manufacturer='" + manufacturer + '\'' +
+                ", memoryAmount='" + memoryAmount + '\'' +
+                ", processor='" + processor + '\'' +
+                ", price=" + price +
+                ", quantity=" + quantity +
+                '}';
     }
 }

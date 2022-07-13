@@ -14,8 +14,9 @@ public class ConsoleController {
     @Autowired
     ConsoleRepository consoleRepository;
 
-    @GetMapping("/consoles")
-    public List<Console> getConsoles() {
+    @RequestMapping(value = "/consoles", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Console> getAllConsoles() {
         return consoleRepository.findAll();
     }
 
@@ -34,8 +35,6 @@ public class ConsoleController {
         return consoleByManufacturer;
     }
 
-
-
     @PostMapping("/consoles")
     @ResponseStatus(HttpStatus.CREATED)
     public Console createNewConsole(@RequestBody Console console){
@@ -48,18 +47,20 @@ public class ConsoleController {
         consoleRepository.save(console);
     }
 
-    @DeleteMapping("/consoles/{id}")
+    @PutMapping("/consoles/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteConsole(@PathVariable int id){
-        consoleRepository.deleteById(id);
+    public Console updateConsoleById(@PathVariable int id, @RequestBody Console console){
+        if (console.getId() == id){
+            return consoleRepository.save(console);
+        }
+        return null;
     }
 
-//
-//    Consoles:
-//
-//    Perform standard CRUD operations for consoles.
-//
-//            Search for consoles by manufacturer.
+    @DeleteMapping("/consoles/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteConsoleById(@PathVariable int id){
+        consoleRepository.deleteById(id);
+    }
 
 
 }
