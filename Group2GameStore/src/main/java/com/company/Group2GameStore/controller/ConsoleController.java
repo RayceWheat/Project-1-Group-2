@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 public class ConsoleController {
@@ -20,19 +21,26 @@ public class ConsoleController {
         return consoleRepository.findAll();
     }
 
-//    @GetMapping("/consoles/{id}")
-//    public Console getConsoleById(@PathVariable int id){
-//        if (consoleRepository.findById(id) == null) {
-//            return null;
-//        }
-//        return consoleRepository.findById(id).get();
-//    }
+    @GetMapping("/consoles/{id}")
+    public Console getConsoleById(@PathVariable int id){
+        Optional<Console> returnVal = consoleRepository.findById(id);
 
-    @GetMapping("/console/{manufacturer}")
+        if (returnVal.isPresent()) {
+            return returnVal.get();
+        } else {
+            return null;
+        }
+
+    }
+
+    @GetMapping("/consoles/manufacturer/{manufacturer}")
     public List<Console> getConsoleByManufacturer(@PathVariable String manufacturer){
-        List<Console> consoleByManufacturer = consoleRepository.findConsoleByManufacturer(manufacturer);
+//        List<Console> consoleByManufacturer = consoleRepository.findConsoleByManufacturer(manufacturer);
+//
+//        return consoleByManufacturer;
 
-        return consoleByManufacturer;
+        return consoleRepository.findConsoleByManufacturer(manufacturer);
+
     }
 
     @PostMapping("/consoles")
@@ -42,13 +50,11 @@ public class ConsoleController {
     }
 
     @PutMapping("/consoles")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateConsole(@RequestBody Console console){
         consoleRepository.save(console);
     }
 
     @PutMapping("/consoles/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Console updateConsoleById(@PathVariable int id, @RequestBody Console console){
         if (console.getId() == id){
             return consoleRepository.save(console);
@@ -57,7 +63,6 @@ public class ConsoleController {
     }
 
     @DeleteMapping("/consoles/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteConsoleById(@PathVariable int id){
         consoleRepository.deleteById(id);
     }

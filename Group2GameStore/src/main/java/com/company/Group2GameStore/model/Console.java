@@ -3,6 +3,7 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -24,7 +25,7 @@ public class Console {
 
     private String processor;
 
-    private Double price;
+    private BigDecimal price;
 
     private int quantity;
 
@@ -68,11 +69,11 @@ public class Console {
         this.processor = processor;
     }
 
-    public Double getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 

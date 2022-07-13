@@ -14,8 +14,10 @@ import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.doReturn;
@@ -55,8 +57,9 @@ public class ConsoleControllerTest {
         console.setManufacturer("Sony");
         console.setMemoryAmount("300gb");
         console.setProcessor("BigSuperGoodOne");
+        console.setPrice(new BigDecimal("399.99"));
         console.setQuantity(10);
-        console.setId(1);
+        console.setId(11);
         consoleJson = mapper.writeValueAsString(console);
 
         Console console1 = new Console();
@@ -64,6 +67,7 @@ public class ConsoleControllerTest {
         console1.setManufacturer("Nintendo");
         console1.setMemoryAmount("256gb");
         console1.setProcessor("NotAGoodOne");
+        console1.setPrice(new BigDecimal("299.99"));
         console1.setQuantity(5);
         console1.setId(2);
 
@@ -93,16 +97,43 @@ public class ConsoleControllerTest {
                 .andExpect(content().json(consoleJson));
     }
 
-
     @Test
-    public void shouldReturnAllConsoles() throws Exception {
+    public void shouldReturnConsoleById() throws Exception{
+        Optional<Console> optConsole = Optional.of(console);
+        doReturn(optConsole).when(repo).findById(11);
 
-        //Arrange and Act
-        mockMvc.perform(get("/consoles"))
-                .andDo(print())
-                .andExpect(status().isOk());
-                //
+        mockMvc.perform(
+                get("/consoles/11"))
+                .andExpect(status().isOk())
+                .andExpect((content().json(consoleJson))
+        );
+
     }
 
+    @Test
+    public void shouldReturnAllConsolesByManufacturer() throws Exception {
+        doReturn(allConsoles).when(repo).findConsoleByManufacturer("Sony");
+
+        mockMvc.perform(
+                get("/consoles/manufacturer/Sony"))
+                .andExpect(status().isOk())
+                .andExpect((content().json(allConsoleJson))
+        );
+    }
+
+    @Test
+    public void shouldUpdateConsoleAndReturnStatus200() throws Exception{
+        mockMvc.perform(
+                put("/consoles")
+                        .content(consoleJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andExpect(status().isOk());
+    }
+
+    @Test
+    public void shouldDeleteByIdAndReturnStatus200() throws Exception{
+        mockMvc.perform(delete("/consoles/11")).andExpect(status().isOk());
+    }
 
 }
