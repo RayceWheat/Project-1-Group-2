@@ -13,7 +13,7 @@ import java.util.Objects;
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @Table(name = "games")
-public class Games implements Serializable {
+public class Game implements Serializable {
 
     @Id
     @Column(name = "game_id")
@@ -39,7 +39,7 @@ public class Games implements Serializable {
     @NotNull
     private Integer quantity;
 
-    public Games(Integer gameId, String title, String esrbRating, String description, BigDecimal price, String studio, Integer quantity) {
+    public Game(Integer gameId, String title, String esrbRating, String description, BigDecimal price, String studio, Integer quantity) {
         this.gameId = gameId;
         this.title = title;
         this.esrbRating = esrbRating;
@@ -49,7 +49,7 @@ public class Games implements Serializable {
         this.quantity = quantity;
     }
 
-    public Games() {
+    public Game() {
 
     }
 
@@ -113,8 +113,8 @@ public class Games implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        Games games = (Games) o;
-        return Objects.equals(gameId, games.gameId) && Objects.equals(title, games.title) && Objects.equals(esrbRating, games.esrbRating) && Objects.equals(description, games.description) && Objects.equals(price, games.price) && Objects.equals(studio, games.studio) && Objects.equals(quantity, games.quantity);
+        Game game = (Game) o;
+        return Objects.equals(gameId, game.gameId) && Objects.equals(title, game.title) && Objects.equals(esrbRating, game.esrbRating) && Objects.equals(description, game.description) && Objects.equals(price, game.price) && Objects.equals(studio, game.studio) && Objects.equals(quantity, game.quantity);
     }
 
     @Override
@@ -124,7 +124,7 @@ public class Games implements Serializable {
 
     @Override
     public String toString() {
-        return "Games{" +
+        return "Game{" +
                 "gameId=" + gameId +
                 ", title='" + title + '\'' +
                 ", esrbRating='" + esrbRating + '\'' +

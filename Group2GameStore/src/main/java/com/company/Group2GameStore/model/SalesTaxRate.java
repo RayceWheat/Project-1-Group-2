@@ -11,7 +11,7 @@ import java.util.Objects;
 
 @Entity
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@Table(name = "sales_tax_rate", indexes = { @Index(name = "ix_state_rate", columnList = "sales_tax_rate(state)")})
+@Table(name = "sales_tax_rate")
 public class SalesTaxRate implements Serializable {
 
     @Id
@@ -33,6 +33,7 @@ public class SalesTaxRate implements Serializable {
 
     public SalesTaxRate() {
     }
+
 
     public Integer getTaxId() {
         return taxId;
