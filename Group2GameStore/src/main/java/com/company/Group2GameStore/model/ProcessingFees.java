@@ -10,6 +10,15 @@ import java.util.Objects;
 @Table(name = "processing_fees")
 public class ProcessingFees {
 
+    //Only 3
+//
+//    Consoles: 14.99
+//
+//    T-shirts: 1.98
+//
+//    Games: 1.49
+
+
     @Id
     @Column(name = "processingFees_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
