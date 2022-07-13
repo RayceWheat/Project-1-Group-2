@@ -14,12 +14,12 @@ import java.util.Optional;
 public class TshirtController {
     @Autowired
     TshirtRepository tshirtRepository;
-    private static int idCounter = 1;
+//    private static int idCounter = 1;
 
     //Create Tshirt
     @RequestMapping(value = "/tshirt", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Tshirt createTshirt(@RequestBody @Valid Tshirt tshirt) { return tshirtRepository.save(tshirt);}
+    public Tshirt createTshirt(@RequestBody Tshirt tshirt) { return tshirtRepository.save(tshirt);}
 
 
     //Find all Tshirts, filter by color/size
@@ -51,13 +51,13 @@ public class TshirtController {
     }
 
 
-    //Update by id
+//    Update by id
     @RequestMapping(value = "/tshirt/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTshirtById(@PathVariable int id, @RequestBody Tshirt tshirt) {
-        if (tshirt.getId() == null) {
-            tshirt.setId(id);
-        } else if (tshirt.getId() != id) {
+        if (tshirt.gettShirtId() == null) {
+            tshirt.settShirtId(id);
+        } else if (tshirt.gettShirtId() != id) {
             throw new IllegalArgumentException("Id does not match");
         }
 

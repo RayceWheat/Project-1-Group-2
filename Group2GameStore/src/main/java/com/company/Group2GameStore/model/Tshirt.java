@@ -3,6 +3,8 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.Objects;
@@ -14,42 +16,28 @@ public class Tshirt {
     @Id
     @Column(name="t_shirt_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer id;
-    @Column(name="t_shirt")
+    private Integer tShirtId;
+
+//    @NotEmpty
     private String tshirt;
+//    @NotEmpty
     private String color;
+//    @NotEmpty
     private String size;
 
+//    @NotEmpty
     private String description;
+//    @NotNull
     private BigDecimal price;
+//    @NotNull
     private Integer quantity;
 
-    public Tshirt(Integer id, String tshirt, String color, String size, String description, BigDecimal price, Integer quantity) {
-        this.id = id;
-        this.tshirt = tshirt;
-        this.color = color;
-        this.size = size;
-        this.description = description;
-        this.price = price;
-        this.quantity = quantity;
+    public Integer gettShirtId() {
+        return tShirtId;
     }
 
-    public Tshirt(Integer id, String tshirt, String color, String size) {
-        this.id = id;
-        this.tshirt = tshirt;
-        this.color = color;
-        this.size = size;
-    }
-
-    public Tshirt() {
-    }
-
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
+    public void settShirtId(Integer tShirtId) {
+        this.tShirtId = tShirtId;
     }
 
     public String getTshirt() {
@@ -105,18 +93,18 @@ public class Tshirt {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Tshirt tshirt1 = (Tshirt) o;
-        return Objects.equals(id, tshirt1.id) && Objects.equals(tshirt, tshirt1.tshirt) && Objects.equals(color, tshirt1.color) && Objects.equals(size, tshirt1.size) && Objects.equals(description, tshirt1.description) && Objects.equals(price, tshirt1.price) && Objects.equals(quantity, tshirt1.quantity);
+        return Objects.equals(tShirtId, tshirt1.tShirtId) && Objects.equals(tshirt, tshirt1.tshirt) && Objects.equals(color, tshirt1.color) && Objects.equals(size, tshirt1.size) && Objects.equals(description, tshirt1.description) && Objects.equals(price, tshirt1.price) && Objects.equals(quantity, tshirt1.quantity);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, tshirt, color, size, description, price, quantity);
+        return Objects.hash(tShirtId, tshirt, color, size, description, price, quantity);
     }
 
     @Override
     public String toString() {
         return "Tshirt{" +
-                "id=" + id +
+                "tShirtId=" + tShirtId +
                 ", tshirt='" + tshirt + '\'' +
                 ", color='" + color + '\'' +
                 ", size='" + size + '\'' +

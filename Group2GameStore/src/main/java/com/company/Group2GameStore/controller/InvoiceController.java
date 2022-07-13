@@ -18,7 +18,7 @@ public class InvoiceController {
     //Create invoice
     @RequestMapping(value = "/invoice", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Invoice createInvoice(@RequestBody @Valid Invoice invoice) { return invoiceRepository.save(invoice);}
+    public Invoice createInvoice(@RequestBody Invoice invoice) { return invoiceRepository.save(invoice);}
 
     //Find all invoice, filter by name?
     @RequestMapping(value="/invoice", method = RequestMethod.GET)
@@ -42,13 +42,13 @@ public class InvoiceController {
         return invoice.get();
     }
 
-    //Update by id
+//    Update by id
     @RequestMapping(value = "/invoice/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateInvoiceById(@PathVariable int id, @RequestBody Invoice invoice) {
-        if (invoice.getId() == null) {
-            invoice.setId(id);
-        } else if (invoice.getId() != id) {
+        if (invoice.getInvoiceId() == null) {
+            invoice.setInvoiceId(id);
+        } else if (invoice.getInvoiceId() != id) {
             throw new IllegalArgumentException("Id does not match");
         }
 
