@@ -2,6 +2,7 @@ package com.company.Group2GameStore.controller;
 
 import com.company.Group2GameStore.model.Console;
 import com.company.Group2GameStore.repository.ConsoleRepository;
+import com.company.Group2GameStore.service.ServiceLayer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -37,7 +38,7 @@ public class ConsoleControllerTest {
 
     //This will change to service layer when we get to that
     @MockBean
-    ConsoleRepository repo;
+    ServiceLayer repo;
 
     //Object mapper used to convert java objects to Json and vice versa
     private ObjectMapper mapper = new ObjectMapper();
