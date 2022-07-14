@@ -3,6 +3,9 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotEmpty;
 import java.math.BigDecimal;
 import java.util.Objects;
 
@@ -16,17 +19,22 @@ public class Console {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
+    @NotEmpty
     private String model;
 
+    @NotEmpty
     private String manufacturer;
 
     @Column(name = "memory_amount")
     private String memoryAmount;
 
+    @NotEmpty
     private String processor;
 
+    @DecimalMin(value = "00.01")
     private BigDecimal price;
 
+    @Min(value = 0)
     private int quantity;
 
     public int getId() {
