@@ -33,12 +33,14 @@ public class Game implements Serializable {
     private String description;
 
     @DecimalMin("1.00")
+    @NotNull
     private BigDecimal price;
 
     @NotEmpty
     private String studio;
 
     @Min(value=0)
+    @NotNull
     private Integer quantity;
 
     public Game(Integer gameId, String title, String esrbRating, String description, BigDecimal price, String studio, Integer quantity) {
@@ -54,6 +56,7 @@ public class Game implements Serializable {
     public Game() {
 
     }
+
 
     public Integer getGameId() {
         return gameId;

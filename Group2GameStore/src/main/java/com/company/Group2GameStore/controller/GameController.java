@@ -8,6 +8,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -56,11 +57,36 @@ public class GameController {
 
 
     // update a game
-    @RequestMapping(value = "/games", method = RequestMethod.PUT)
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
-    public void updateGame(@RequestBody @Valid Game game) {
+    public void updateGame(@PathVariable int id, @RequestBody @Valid Game game) {
+
+//        List<Game> gamesList = gameRepository.findAll();
+
+//        if( game.getGameId() == 0 ) {
+//            game.setGameId(id);
+//        }
+//
+//        if( game.getGameId() != id) {
+//            throw new IllegalArgumentException("Id in parameter must match the ID in the request body");
+//        }
+
+//        int index = -1;
+//
+//        for(int i = 0; i < gamesList.size(); i++) {
+//            if(gamesList.get(i).getGameId() == id) {
+//                index = i;
+//                break;
+//            }
+//        }
+//
+//        if (index >= 0) {
+//            gamesList.set(index, game);
+//        }
+
         gameRepository.save(game);
     }
+
 
     // delete game
     @RequestMapping(value = "/games/{id}", method = RequestMethod.DELETE)
