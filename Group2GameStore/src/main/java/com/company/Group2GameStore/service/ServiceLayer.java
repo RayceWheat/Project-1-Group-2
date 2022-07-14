@@ -2,10 +2,7 @@ package com.company.Group2GameStore.service;
 
 import com.company.Group2GameStore.controller.TshirtController;
 import com.company.Group2GameStore.exceptions.NotFoundException;
-import com.company.Group2GameStore.model.Console;
-import com.company.Group2GameStore.model.Game;
-import com.company.Group2GameStore.model.Invoice;
-import com.company.Group2GameStore.model.Tshirt;
+import com.company.Group2GameStore.model.*;
 import com.company.Group2GameStore.repository.*;
 import com.company.Group2GameStore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -181,6 +180,33 @@ public class ServiceLayer {
         tshirtRepository.deleteById(id);
    }
 
+   public List<InvoiceViewModel> getAllInvoices(){
+
+        List<Invoice> invoiceList = invoiceRepository.findAll();
+
+        List<InvoiceViewModel> ivmList = new ArrayList<>();
+
+        for(Invoice invoice : invoiceList){
+            InvoiceViewModel ivm = buildInvoiceViewModel(invoice);
+            ivmList.add(ivm);
+        }
+
+        return ivmList;
+   }
+
+   public InvoiceViewModel getInvoiceById(int id){
+        Optional<Invoice> invoice = invoiceRepository.findById(id);
+
+        if (invoice == null){
+            throw new NotFoundException("Invoice with that ID does not exists");
+        } else {
+            return buildInvoiceViewModel(invoice.get());
+        }
+
+   }
+
+
+
 
 //    Business Rules
 //
@@ -200,13 +226,135 @@ public class ServiceLayer {
 //
 //    The REST API must properly handle and report all violations of business rules.
 //
-//    public InvoiceViewModel createInvoice(Invoice invoice){
-//        InvoiceViewModel newInvoice = new InvoiceViewModel();
-//        newInvoice.setInvoiceId(invoice.getInvoiceId());
-//        newInvoice.setCity(invoice.getCity());
-//        //etc etc
-//       //
-//
-//   }
+
+    //        if(newInvoice.getQuantity() <= 0){
+    //            throw new IllegalArgumentException("Quantity must be greater than 0");
+    //        }
+
+   public InvoiceViewModel createANewInvoice(InvoiceViewModel ivm){
+       if(ivm.getQuantity() <= 0){
+           throw new IllegalArgumentException("Quantity must be greater than zero");
+       }
+
+       switch(ivm.getItemType()){
+           case "Game":
+               Optional<Game> foundGame = gameRepository.findById(ivm.getItemId());
+               if(ivm.getQuantity() > foundGame.get().getQuantity()){
+                   throw new IllegalArgumentException("You can't buy more games than we have in stock");
+               } else {
+                   foundGame.get().setQuantity(foundGame.get().getQuantity() - ivm.getQuantity());
+                   gameRepository.save(foundGame.get());
+               }
+               break;
+           case "Tshirt":
+               Optional<Tshirt> foundTshirt = tshirtRepository.findById(ivm.getItemId());
+               if(ivm.getQuantity() > foundTshirt.get().getQuantity()){
+                   throw new IllegalArgumentException("Out of stock");
+               } else {
+                   foundTshirt.get().setQuantity(foundTshirt.get().getQuantity() - ivm.getQuantity());
+                   tshirtRepository.save(foundTshirt.get());
+               }
+               break;
+           case "Console":
+               Optional<Console> foundConsole = consoleRepository.findById(ivm.getItemId());
+               if(ivm.getQuantity() > foundConsole.get().getQuantity()){
+                   throw new IllegalArgumentException("Out of stock");
+               } else {
+                   foundConsole.get().setQuantity(foundConsole.get().getQuantity() - ivm.getQuantity());
+                   consoleRepository.save(foundConsole.get());
+               }
+               break;
+           default:
+               throw new IllegalArgumentException("We don't sell this");
+       }
+
+       List<SalesTaxRate> allStates = new ArrayList<>();
+
+       allStates = salesTaxRepository.findAll();
+
+       for(SalesTaxRate state : allStates){
+           if (ivm.getState().equals(state)){
+               System.out.println("good");
+           }
+           else {
+               throw new IllegalArgumentException("Please enter a valid sate");
+           }
+       }
+
+       ivm.setSubtotal(ivm.getUnitPrice().multiply(BigDecimal.valueOf(ivm.getQuantity())));
+
+       ivm.setTax(salesTaxRepository.findTaxByState(ivm.getState()));
+
+       System.out.println(ivm.getSubtotal());
+       System.out.println(ivm.getTax());
+
+       ivm.setSubtotal(ivm.getSubtotal().multiply(ivm.getTax()));
+
+       ivm.setProcessingFee(processingFeeRepository.findProcessingFeeByProductType(ivm.getItemType()));
+
+       if(ivm.getQuantity() > 10){
+           ivm.setProcessingFee(ivm.getProcessingFee().add(new BigDecimal("15.49")));
+       }
+
+       ivm.setTotal(ivm.getSubtotal().add(ivm.getProcessingFee()));
+
+
+       Invoice invoice = new Invoice();
+
+       invoice.setName(ivm.getName());
+       invoice.setStreet(ivm.getStreet());
+       invoice.setCity(ivm.getCity());
+       invoice.setState(ivm.getState());
+       invoice.setZipCode(ivm.getZipCode());
+       invoice.setItemType(ivm.getItemType());
+       invoice.setQuantity(ivm.getQuantity());
+       invoice.setItemId(ivm.getItemId());
+       invoice.setUnitPrice(ivm.getUnitPrice());
+       invoice.setSubtotal(ivm.getSubtotal());
+       invoice.setTax(ivm.getTax());
+       invoice.setProcessingFee(ivm.getProcessingFee());
+       invoice.setTotal(ivm.getTotal());
+
+       invoiceRepository.save(invoice);
+
+       return ivm;
+
+       //Validate/check bussines logic i.e object exists, quantity is not <= 0
+       //ivm is not null, item type exists and is valid i.e tshirt,game,console
+
+       //Building a regular invoice object
+       //set properties from ivm that was passed into this method (name,street,city,state,zipcode,itemtype,itemid,quanity,etc)
+
+
+       //Update the qunaity of whatever item is bought
+
+   }
+
+
+
+    private InvoiceViewModel buildInvoiceViewModel(Invoice invoice){
+
+        InvoiceViewModel newInvoice = new InvoiceViewModel();
+        newInvoice.setInvoiceId(invoice.getInvoiceId());
+        newInvoice.setName(invoice.getName());
+        newInvoice.setStreet(invoice.getStreet());
+        newInvoice.setCity(invoice.getCity());
+        newInvoice.setState(invoice.getState());
+        newInvoice.setZipCode(invoice.getZipCode());
+        newInvoice.setItemType(invoice.getItemType());
+        newInvoice.setItemId(invoice.getItemId());
+        newInvoice.setUnitPrice(invoice.getUnitPrice());
+        newInvoice.setQuantity(invoice.getQuantity());
+        newInvoice.setSubtotal((invoice.getSubtotal()));
+
+        newInvoice.setTax(invoice.getTax());
+        newInvoice.setProcessingFee(invoice.getProcessingFee());
+        newInvoice.setTotal(invoice.getTotal());
+
+        return newInvoice;
+   }
+
+
+
 
 }

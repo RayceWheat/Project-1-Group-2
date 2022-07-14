@@ -3,6 +3,7 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
@@ -27,7 +28,7 @@ public class ProcessingFees {
     @Column(name = "product_type")
     private String productType;
 
-    private double fee;
+    private BigDecimal fee;
 
 
     public int getId() {
@@ -46,11 +47,11 @@ public class ProcessingFees {
         this.productType = productType;
     }
 
-    public double getFee() {
+    public BigDecimal getFee() {
         return fee;
     }
 
-    public void setFee(double fee) {
+    public void setFee(BigDecimal fee) {
         this.fee = fee;
     }
 
@@ -59,7 +60,7 @@ public class ProcessingFees {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         ProcessingFees that = (ProcessingFees) o;
-        return id == that.id && Double.compare(that.fee, fee) == 0 && Objects.equals(productType, that.productType);
+        return id == that.id && Objects.equals(productType, that.productType) && Objects.equals(fee, that.fee);
     }
 
     @Override
