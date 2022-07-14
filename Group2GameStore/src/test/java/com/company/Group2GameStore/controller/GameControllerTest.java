@@ -157,7 +157,7 @@ public class GameControllerTest {
     @Test
     public void shouldUpdateGameAndReturnStatus200() throws Exception {
         mockMvc.perform(
-                        put("/games")
+                        put("/games/1")
                                 .content(gameJson)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
@@ -168,5 +168,59 @@ public class GameControllerTest {
     public void shouldDeleteGameByIdAndReturn200StatusCode() throws Exception {
         mockMvc.perform(delete("/games/2")).andExpect(status().isOk());
     }
+
+    @Test
+    public void shouldReturn422StatusCodeIfOnePropertyNullOrEmpty() throws Exception {
+
+        Game inputGame = new Game();
+        inputGame.setTitle("Game of Thrones");
+        inputGame.setEsrbRating("Mature");
+        inputGame.setDescription("Awesome Game with numerous alternate endings.");
+        inputGame.setPrice(new BigDecimal("14.99"));
+        inputGame.setStudio("Warner Bros Entertainment");
+        // inputGame.setQuantity is missing (null) - triggers 422 because validation set to NOTNULL
+
+        String inputJson = mapper.writeValueAsString(inputGame);
+
+        mockMvc.perform(
+                        post("/games")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void shouldReturn422StatusCodeIfGameNotFound() throws Exception {
+        mockMvc.perform(get("/games/0"))
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    // double check put route in controller- it's either updating the wrong id or adding a new game in error
+    // status 200- it's updating the wrong id!
+
+//    @Test
+//    public void shouldReturn422StatusCodeIfIdsDoNotMatch() throws Exception {
+//        Game inputGame = new Game();
+//        inputGame.setGameId(1);
+//        inputGame.setTitle("Game of Thrones");
+//        inputGame.setEsrbRating("Mature");
+//        inputGame.setDescription("Awesome Game with numerous alternate endings.");
+//        inputGame.setPrice(new BigDecimal("14.99"));
+//        inputGame.setStudio("Warner Bros Entertainment");
+//        inputGame.setQuantity(25);
+//
+//        String inputJson = mapper.writeValueAsString(inputGame);
+//
+//        mockMvc.perform(
+//                        put("/games/2")
+//                                .content(inputJson)
+//                                .contentType(MediaType.APPLICATION_JSON)
+//                )
+//                .andDo(print())
+//                .andExpect(status().isUnprocessableEntity());
+//    }
 
 }

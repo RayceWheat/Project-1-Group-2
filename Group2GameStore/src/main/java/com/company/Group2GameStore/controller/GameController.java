@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,8 +41,9 @@ public class GameController {
 
 
     // update a game
-    @RequestMapping(value = "/games", method = RequestMethod.PUT)
+    @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
+
     public void updateGame(@RequestBody @Valid Game game) {
         serviceLayer.updateGame(game);
     }
@@ -51,6 +53,7 @@ public class GameController {
     public Game updateGameById(@PathVariable int id, @RequestBody @Valid Game game){
         return serviceLayer.updateGameById(id, game);
     }
+
 
     // delete game
     @RequestMapping(value = "/games/{id}", method = RequestMethod.DELETE)
