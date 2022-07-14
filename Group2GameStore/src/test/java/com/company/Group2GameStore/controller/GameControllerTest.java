@@ -58,7 +58,7 @@ public class GameControllerTest {
         otherGame.setGameId(2);
         otherGame.setTitle("Something With Elves");
         otherGame.setEsrbRating("Teen");
-        otherGame.setDescription("Elves have can fly adn climb trees.");
+        otherGame.setDescription("Elves can fly and climb trees.");
         otherGame.setPrice(new BigDecimal("29.99"));
         otherGame.setStudio("Elf Lovers");
         otherGame.setQuantity(25);
@@ -75,12 +75,12 @@ public class GameControllerTest {
     public void shouldCreateNewGameOnPostRequest() throws Exception {
 
         Game inputGame = new Game();
-        game.setTitle("Game of Thrones");
-        game.setEsrbRating("Mature");
-        game.setDescription("Awesome Game with numerous alternate endings.");
-        game.setPrice(new BigDecimal("14.99"));
-        game.setStudio("Warner Bros Entertainment");
-        game.setQuantity(25);
+        inputGame.setTitle("Game of Thrones");
+        inputGame.setEsrbRating("Mature");
+        inputGame.setDescription("Awesome Game with numerous alternate endings.");
+        inputGame.setPrice(new BigDecimal("14.99"));
+        inputGame.setStudio("Warner Bros Entertainment");
+        inputGame.setQuantity(25);
 
         String inputJson = mapper.writeValueAsString(inputGame);
 
