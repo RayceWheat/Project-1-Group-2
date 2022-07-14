@@ -19,7 +19,7 @@ public class TshirtController {
     //Create Tshirt
     @RequestMapping(value = "/tshirt", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Tshirt createTshirt(@RequestBody Tshirt tshirt) { return tshirtRepository.save(tshirt);}
+    public Tshirt createTshirt(@RequestBody @Valid Tshirt tshirt) { return tshirtRepository.save(tshirt);}
 
 
     //Find all Tshirts, filter by color/size
@@ -32,9 +32,9 @@ public class TshirtController {
         if (size != null) {
             return tshirtRepository.findBySize(size);
         }
-        if (color != null && size != null) {
-            return tshirtRepository.findByColorAndSize(color, size);
-        }
+//        if (color != null && size != null) {
+//            return tshirtRepository.findByColorAndSize(color, size);
+//        }
         return tshirtRepository.findAll();
     }
 
