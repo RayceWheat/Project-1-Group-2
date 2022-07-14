@@ -1,7 +1,3 @@
-// this controller is not needed
-
-
-
 //package com.company.Group2GameStore.controller;
 //
 //import com.company.Group2GameStore.model.Game;
@@ -21,6 +17,9 @@
 //    @Autowired
 //    SalesTaxRepository salesTaxRepository;
 //
+//    // get all state taxes
+////    @RequestMapping(value = "/tax", method = RequestMethod.GET)
+////    @ResponseStatus(HttpStatus.OK)
 //    @GetMapping("/tax")
 //    public List<SalesTaxRate> getSalesTax(@RequestParam(required=false) String state, @RequestParam(required=false) BigDecimal rate) {
 //         {
@@ -34,4 +33,10 @@
 //        return salesTaxRepository.findAll();
 //    }
 //
+////    @RequestMapping(value = "/tax", method = RequestMethod.POST)
+////    @ResponseStatus(HttpStatus.CREATED)
+////    public SalesTaxRate addTaxRate (@RequestBody @Valid SalesTaxRate salesTaxRate) {
+////
+////        return salesTaxRepository.save(salesTaxRate);
+////    }
 //}

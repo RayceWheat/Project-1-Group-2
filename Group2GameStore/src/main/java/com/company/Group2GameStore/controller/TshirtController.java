@@ -2,6 +2,7 @@ package com.company.Group2GameStore.controller;
 
 import com.company.Group2GameStore.model.Tshirt;
 import com.company.Group2GameStore.repository.TshirtRepository;
+import com.company.Group2GameStore.service.ServiceLayer;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -13,41 +14,31 @@ import java.util.Optional;
 @RestController
 public class TshirtController {
     @Autowired
-    TshirtRepository tshirtRepository;
+    ServiceLayer serviceLayer;
 //    private static int idCounter = 1;
 
     //Create Tshirt
     @RequestMapping(value = "/tshirt", method = RequestMethod.POST)
     @ResponseStatus(HttpStatus.CREATED)
-    public Tshirt createTshirt(@RequestBody Tshirt tshirt) { return tshirtRepository.save(tshirt);}
+
+    public Tshirt createTshirt(@RequestBody Tshirt tshirt) {
+        return serviceLayer.createTShirt(tshirt);
+    }
+
 
 
     //Find all Tshirts, filter by color/size
     @RequestMapping(value="/tshirt", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public List<Tshirt> getAllTshirts(@RequestParam(required = false) String color, String size) {
-        if (color != null) {
-            return tshirtRepository.findByColor(color);
-        }
-        if (size != null) {
-            return tshirtRepository.findBySize(size);
-        }
-        if (color != null && size != null) {
-            return tshirtRepository.findByColorAndSize(color, size);
-        }
-        return tshirtRepository.findAll();
+        return serviceLayer.getAllTShirts(color, size);
     }
 
     //Find by id
     @RequestMapping(value = "/tshirt/{id}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
     public Tshirt getTshirtById(@PathVariable int id) {
-        Optional<Tshirt> tshirt = tshirtRepository.findById(id);
-        if(tshirt.isPresent() == false) {
-            throw new IllegalArgumentException("Invalid Id");
-        }
-
-        return tshirt.get();
+        return serviceLayer.getTshirtById(id);
     }
 
 
@@ -55,19 +46,12 @@ public class TshirtController {
     @RequestMapping(value = "/tshirt/{id}", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void updateTshirtById(@PathVariable int id, @RequestBody Tshirt tshirt) {
-        if (tshirt.gettShirtId() == null) {
-            tshirt.settShirtId(id);
-        } else if (tshirt.gettShirtId() != id) {
-            throw new IllegalArgumentException("Id does not match");
-        }
-
-        tshirtRepository.save(tshirt);
+        serviceLayer.updateTshirtById(id, tshirt);
     }
-
 
     //Delete by id
     @RequestMapping(value = "/tshirt/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void deleteTshirt(@PathVariable int id) { tshirtRepository.deleteById(id);}
+    public void deleteTshirt(@PathVariable int id) { serviceLayer.deleteTshirtById(id);}
 
 }
