@@ -10,9 +10,6 @@ import java.util.List;
 import java.util.Optional;
 
 @Repository
-public interface SalesTaxRepository extends JpaRepository<SalesTaxRate, Integer> {
-
-    BigDecimal findTaxByState(String state);
-    List<SalesTaxRate> findTaxByRate(BigDecimal rate);
+public interface SalesTaxRepository extends JpaRepository<SalesTaxRate, String> {
 
 }

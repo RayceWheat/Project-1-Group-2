@@ -7,8 +7,6 @@ import org.springframework.stereotype.Repository;
 import java.math.BigDecimal;
 
 @Repository
-public interface ProcessingFeeRepository extends JpaRepository<ProcessingFees, Integer> {
-
-    BigDecimal findProcessingFeeByProductType(String productType);
+public interface ProcessingFeeRepository extends JpaRepository<ProcessingFees, String> {
 
 }

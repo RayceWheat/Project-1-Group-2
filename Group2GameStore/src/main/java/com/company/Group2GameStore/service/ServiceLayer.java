@@ -237,7 +237,7 @@ public class ServiceLayer {
        }
 
        switch(ivm.getItemType()){
-           case "Game":
+           case "Games":
                Optional<Game> foundGame = gameRepository.findById(ivm.getItemId());
                if(ivm.getQuantity() > foundGame.get().getQuantity()){
                    throw new IllegalArgumentException("You can't buy more games than we have in stock");
@@ -246,7 +246,7 @@ public class ServiceLayer {
                    gameRepository.save(foundGame.get());
                }
                break;
-           case "Tshirt":
+           case "T-shirts":
                Optional<Tshirt> foundTshirt = tshirtRepository.findById(ivm.getItemId());
                if(ivm.getQuantity() > foundTshirt.get().getQuantity()){
                    throw new IllegalArgumentException("Out of stock");
@@ -255,7 +255,7 @@ public class ServiceLayer {
                    tshirtRepository.save(foundTshirt.get());
                }
                break;
-           case "Console":
+           case "Consoles":
                Optional<Console> foundConsole = consoleRepository.findById(ivm.getItemId());
                if(ivm.getQuantity() > foundConsole.get().getQuantity()){
                    throw new IllegalArgumentException("Out of stock");
@@ -268,29 +268,41 @@ public class ServiceLayer {
                throw new IllegalArgumentException("We don't sell this");
        }
 
-       List<SalesTaxRate> allStates = new ArrayList<>();
+//       List<SalesTaxRate> allStates = new ArrayList<>();
+//
+//       allStates = salesTaxRepository.findAll();
+//
+//       for(SalesTaxRate state : allStates){
+//           if (ivm.getState().equals(state)){
+//               System.out.println("good");
+//           } else {
+//               throw new IllegalArgumentException("Please enter a valid state");
+//           }
+//       }
 
-       allStates = salesTaxRepository.findAll();
 
-       for(SalesTaxRate state : allStates){
-           if (ivm.getState().equals(state)){
-               System.out.println("good");
-           }
-           else {
-               throw new IllegalArgumentException("Please enter a valid sate");
-           }
-       }
+       BigDecimal quantityAsBigDecmial = new BigDecimal(ivm.getQuantity());
 
-       ivm.setSubtotal(ivm.getUnitPrice().multiply(BigDecimal.valueOf(ivm.getQuantity())));
+       ivm.setSubtotal(ivm.getUnitPrice().multiply(quantityAsBigDecmial));
 
-       ivm.setTax(salesTaxRepository.findTaxByState(ivm.getState()));
+
+       Optional<SalesTaxRate> salesTaxRate = salesTaxRepository.findById(ivm.getState());
+       System.out.println(salesTaxRate);
+
+
+       ivm.setTax(salesTaxRate.get().getRate());
 
        System.out.println(ivm.getSubtotal());
        System.out.println(ivm.getTax());
 
-       ivm.setSubtotal(ivm.getSubtotal().multiply(ivm.getTax()));
+       BigDecimal originalSubTotal = ivm.getSubtotal();
+       BigDecimal taxAmount = ivm.getSubtotal().multiply(ivm.getTax());
 
-       ivm.setProcessingFee(processingFeeRepository.findProcessingFeeByProductType(ivm.getItemType()));
+       System.out.println(ivm.getSubtotal());
+
+       Optional<ProcessingFees> processingFeesOptional = processingFeeRepository.findById(ivm.getItemType());
+
+       ivm.setProcessingFee(processingFeesOptional.get().getFee());
 
        if(ivm.getQuantity() > 10){
            ivm.setProcessingFee(ivm.getProcessingFee().add(new BigDecimal("15.49")));
@@ -314,6 +326,9 @@ public class ServiceLayer {
        invoice.setTax(ivm.getTax());
        invoice.setProcessingFee(ivm.getProcessingFee());
        invoice.setTotal(ivm.getTotal());
+
+       ivm.setInvoiceId(invoice.getInvoiceId());
+
 
        invoiceRepository.save(invoice);
 
