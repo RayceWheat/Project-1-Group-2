@@ -98,6 +98,46 @@ public class ConsoleControllerTest {
     }
 
     @Test
+    public void shouldReturn422StatusCodeWithInvalidRequestBody() throws Exception {
+        Console badConsole = new Console();
+
+        String inputJson = mapper.writeValueAsString(badConsole);
+
+        mockMvc.perform(
+                post("/consoles")
+                        .content(inputJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
+    public void shouldReturn422StatusCodeIfIdsDoNotMatch() throws Exception{
+        Console console1 = new Console();
+        console1.setModel("Switch");
+        console1.setManufacturer("Nintendo");
+        console1.setMemoryAmount("256gb");
+        console1.setProcessor("NotAGoodOne");
+        console1.setPrice(new BigDecimal("199.99"));
+        console1.setQuantity(5);
+        console1.setId(2);
+
+        Optional<Console> optConsole = Optional.of(console1);
+        doReturn(optConsole).when(repo).findById(2);
+
+        String inputJson = mapper.writeValueAsString(console1);
+
+        mockMvc.perform(
+                        put("/consoles/5")
+                                .content(inputJson)
+                                .contentType(MediaType.APPLICATION_JSON)
+                )
+                .andDo(print())
+                .andExpect(status().isUnprocessableEntity());
+    }
+
+    @Test
     public void shouldReturnConsoleById() throws Exception{
         Optional<Console> optConsole = Optional.of(console);
         doReturn(optConsole).when(repo).findById(11);
@@ -110,6 +150,7 @@ public class ConsoleControllerTest {
 
     }
 
+
     @Test
     public void shouldReturnAllConsolesByManufacturer() throws Exception {
         doReturn(allConsoles).when(repo).findConsoleByManufacturer("Sony");
@@ -121,19 +162,67 @@ public class ConsoleControllerTest {
         );
     }
 
+//    @Test
+//    public void shouldReturn422IfManufacturerIsNotThere() throws Exception{
+//        mockMvc.perform(
+//                        get("/consoles/manufacturer/Harley"))
+//                .andExpect(status().isUnprocessableEntity());
+//
+//    }
+
     @Test
-    public void shouldUpdateConsoleAndReturnStatus200() throws Exception{
+    public void shouldReturn404StatusCodeIfConsoleNotFound() throws Exception{
+        mockMvc.perform(get("/consoles/-1"))
+                .andDo(print())
+                .andExpect(status().isNotFound());
+    }
+
+
+    @Test
+    public void shouldUpdateConsoleAndReturnStatus204() throws Exception{
         mockMvc.perform(
                 put("/consoles")
                         .content(consoleJson)
                         .contentType(MediaType.APPLICATION_JSON)
         )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    public void shouldDeleteByIdAndReturnStatus200() throws Exception{
-        mockMvc.perform(delete("/consoles/11")).andExpect(status().isOk());
+    public void shouldUpdateConsoleByIdAndReturn204StatusCode() throws Exception {
+        Console console1 = new Console();
+        console1.setModel("Switch");
+        console1.setManufacturer("Nintendo");
+        console1.setMemoryAmount("256gb");
+        console1.setProcessor("NotAGoodOne");
+        console1.setPrice(new BigDecimal("199.99"));
+        console1.setQuantity(5);
+        console1.setId(2);
+
+        Optional<Console> optConsole = Optional.of(console1);
+        doReturn(optConsole).when(repo).findById(2);
+
+        String inputJson = mapper.writeValueAsString(console1);
+
+        mockMvc.perform(
+                put("/consoles/2")
+                        .content(inputJson)
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(status().isNoContent());
+
+        mockMvc.perform(
+                get("/consoles/2")
+                        .contentType(MediaType.APPLICATION_JSON)
+        )
+                .andDo(print())
+                .andExpect(content().json(inputJson));
+    }
+
+    @Test
+    public void shouldDeleteByIdAndReturnStatus204() throws Exception{
+        mockMvc.perform(delete("/consoles/11")).andExpect(status().isNoContent());
     }
 
 }

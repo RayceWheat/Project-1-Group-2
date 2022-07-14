@@ -1,5 +1,6 @@
 package com.company.Group2GameStore.controller;
 
+import com.company.Group2GameStore.exceptions.NotFoundException;
 import com.company.Group2GameStore.model.Console;
 import com.company.Group2GameStore.repository.ConsoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ public class ConsoleController {
         if (returnVal.isPresent()) {
             return returnVal.get();
         } else {
-            return null;
+            throw new NotFoundException("Console not found in database");
         }
 
     }
@@ -51,12 +52,22 @@ public class ConsoleController {
     }
 
     @PutMapping("/consoles")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void updateConsole(@RequestBody @Valid Console console){
         consoleRepository.save(console);
     }
 
     @PutMapping("/consoles/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public Console updateConsoleById(@PathVariable int id, @RequestBody @Valid Console console){
+        if(console.getId() == 0) {
+            console.setId(id);
+        }
+
+        if(console.getId() != id) {
+            throw new IllegalArgumentException("Id in parameter must match the ID in the request body");
+        }
+
         if (console.getId() == id){
             return consoleRepository.save(console);
         }
@@ -64,6 +75,7 @@ public class ConsoleController {
     }
 
     @DeleteMapping("/consoles/{id}")
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     public void deleteConsoleById(@PathVariable int id){
         consoleRepository.deleteById(id);
     }
