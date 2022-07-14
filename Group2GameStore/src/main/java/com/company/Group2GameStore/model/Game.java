@@ -4,6 +4,8 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -30,13 +32,13 @@ public class Game implements Serializable {
     @NotEmpty
     private String description;
 
-    @NotNull
+    @DecimalMin("1.00")
     private BigDecimal price;
 
     @NotEmpty
     private String studio;
 
-    @NotNull
+    @Min(value=0)
     private Integer quantity;
 
     public Game(Integer gameId, String title, String esrbRating, String description, BigDecimal price, String studio, Integer quantity) {
