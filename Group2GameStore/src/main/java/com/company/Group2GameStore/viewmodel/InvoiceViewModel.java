@@ -38,6 +38,12 @@ public class InvoiceViewModel {
     @NotNull
     private BigDecimal subtotal;
 
+    private BigDecimal tax;
+
+    private BigDecimal processingFee;
+
+    private BigDecimal total;
+
     public Integer getInvoiceId() {
         return invoiceId;
     }
@@ -126,17 +132,41 @@ public class InvoiceViewModel {
         this.subtotal = subtotal;
     }
 
+    public BigDecimal getTax() {
+        return tax;
+    }
+
+    public void setTax(BigDecimal tax) {
+        this.tax = tax;
+    }
+
+    public BigDecimal getProcessingFee() {
+        return processingFee;
+    }
+
+    public void setProcessingFee(BigDecimal processingFee) {
+        this.processingFee = processingFee;
+    }
+
+    public BigDecimal getTotal() {
+        return total;
+    }
+
+    public void setTotal(BigDecimal total) {
+        this.total = total;
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         InvoiceViewModel that = (InvoiceViewModel) o;
-        return Objects.equals(invoiceId, that.invoiceId) && Objects.equals(name, that.name) && Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zipCode, that.zipCode) && Objects.equals(itemType, that.itemType) && Objects.equals(itemId, that.itemId) && Objects.equals(unitPrice, that.unitPrice) && Objects.equals(quantity, that.quantity) && Objects.equals(subtotal, that.subtotal);
+        return Objects.equals(invoiceId, that.invoiceId) && Objects.equals(name, that.name) && Objects.equals(street, that.street) && Objects.equals(city, that.city) && Objects.equals(state, that.state) && Objects.equals(zipCode, that.zipCode) && Objects.equals(itemType, that.itemType) && Objects.equals(itemId, that.itemId) && Objects.equals(unitPrice, that.unitPrice) && Objects.equals(quantity, that.quantity) && Objects.equals(subtotal, that.subtotal) && Objects.equals(tax, that.tax) && Objects.equals(processingFee, that.processingFee) && Objects.equals(total, that.total);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(invoiceId, name, street, city, state, zipCode, itemType, itemId, unitPrice, quantity, subtotal);
+        return Objects.hash(invoiceId, name, street, city, state, zipCode, itemType, itemId, unitPrice, quantity, subtotal, tax, processingFee, total);
     }
 
     @Override
@@ -153,6 +183,9 @@ public class InvoiceViewModel {
                 ", unitPrice=" + unitPrice +
                 ", quantity=" + quantity +
                 ", subtotal=" + subtotal +
+                ", tax=" + tax +
+                ", processingFee=" + processingFee +
+                ", total=" + total +
                 '}';
     }
 }

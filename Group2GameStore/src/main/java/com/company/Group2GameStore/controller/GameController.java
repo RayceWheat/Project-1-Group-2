@@ -41,7 +41,7 @@ public class GameController {
 
 
     // update a game
-    @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
+    @RequestMapping(value = "/games", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.OK)
 
     public void updateGame(@RequestBody @Valid Game game) {

@@ -19,10 +19,10 @@ public class Invoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer invoiceId;
 
-//    @NotEmpty
+    //    @NotEmpty
     private String name;
 
-//    @NotEmpty
+    //    @NotEmpty
     private String street;
 //    @NotEmpty
     private String city;
@@ -31,13 +31,20 @@ public class Invoice implements Serializable {
 //    @NotEmpty
     private String zipCode;
 //    @NotEmpty
+    //can only be Tshirt Game or Console
     private String itemType;
+
+    //    @NotNull
+    private Integer quantity;
+
+    //call itemid on processing fees repo
 //    @NotNull
     private Integer itemId;
 //    @NotNull
+    //math
     private BigDecimal unitPrice;
-//    @NotNull
-    private Integer quantity;
+
+
 //    @NotNull
     private BigDecimal subtotal;
 

@@ -14,34 +14,13 @@ import java.util.Objects;
 @Table(name = "sales_tax_rate")
 public class SalesTaxRate implements Serializable {
 
-    @Id
-    @Column(name = "tax_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer taxId;
 
+    @Id
     @NotEmpty
     private String state;
 
-    @NotNull
+
     private BigDecimal rate;
-
-    public SalesTaxRate(Integer taxId, String state, BigDecimal rate) {
-        this.taxId = taxId;
-        this.state = state;
-        this.rate = rate;
-    }
-
-    public SalesTaxRate() {
-    }
-
-
-    public Integer getTaxId() {
-        return taxId;
-    }
-
-    public void setTaxId(Integer taxId) {
-        this.taxId = taxId;
-    }
 
     public String getState() {
         return state;
@@ -64,19 +43,19 @@ public class SalesTaxRate implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SalesTaxRate that = (SalesTaxRate) o;
-        return Objects.equals(taxId, that.taxId) && Objects.equals(state, that.state) && Objects.equals(rate, that.rate);
+        return Objects.equals(state, that.state) && Objects.equals(rate, that.rate);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(taxId, state, rate);
+        return Objects.hash(state, rate);
     }
+
 
     @Override
     public String toString() {
         return "SalesTaxRate{" +
-                "taxId=" + taxId +
-                ", state='" + state + '\'' +
+                "state='" + state + '\'' +
                 ", rate=" + rate +
                 '}';
     }

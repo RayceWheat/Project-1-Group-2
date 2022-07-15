@@ -2,10 +2,7 @@ package com.company.Group2GameStore.service;
 
 import com.company.Group2GameStore.controller.TshirtController;
 import com.company.Group2GameStore.exceptions.NotFoundException;
-import com.company.Group2GameStore.model.Console;
-import com.company.Group2GameStore.model.Game;
-import com.company.Group2GameStore.model.Invoice;
-import com.company.Group2GameStore.model.Tshirt;
+import com.company.Group2GameStore.model.*;
 import com.company.Group2GameStore.repository.*;
 import com.company.Group2GameStore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +12,8 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
 import javax.validation.Valid;
+import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -182,31 +181,172 @@ public class ServiceLayer {
    }
 
 
-//    Business Rules
-//
-//    Sales tax applies only to the cost of the items.
-//
-//    Sales tax does not apply to any processing fees for an invoice.
-//
-//    The processing fee is applied only once per order, regardless of the number of items in the order, unless the number of items in the order is greater than 10, in which case an additional processing fee of $15.49 is applied to the order.
-//
-//    The order-processing logic must properly update the quantity available for the item in the order.
-//
-//    Order quantity must be greater than zero.
-//
-//    Order quantity must be less than or equal to the number of items available in inventory.
-//
-//    The order must contain a valid state code.
-//
-//    The REST API must properly handle and report all violations of business rules.
-//
-//    public InvoiceViewModel createInvoice(Invoice invoice){
-//        InvoiceViewModel newInvoice = new InvoiceViewModel();
-//        newInvoice.setInvoiceId(invoice.getInvoiceId());
-//        newInvoice.setCity(invoice.getCity());
-//        //etc etc
-//       //
-//
-//   }
+   public InvoiceViewModel getInvoiceById(int id){
+        Optional<Invoice> invoice = invoiceRepository.findById(id);
+
+        if (invoice == null){
+            throw new NotFoundException("Invoice with that ID does not exists");
+        } else {
+            return buildInvoiceViewModel(invoice.get());
+        }
+
+   }
+
+   public void updateInvoiceById(InvoiceViewModel ivm){
+
+            Invoice invoice1 = new Invoice();
+            invoice1.setInvoiceId(ivm.getInvoiceId());
+            invoice1.setName(ivm.getName());
+            invoice1.setStreet(ivm.getStreet());
+            invoice1.setCity(ivm.getCity());
+            invoice1.setState(ivm.getState());
+            invoice1.setZipCode(ivm.getZipCode());
+            invoice1.setItemType(ivm.getItemType());
+            invoice1.setQuantity(ivm.getQuantity());
+            invoice1.setUnitPrice(ivm.getUnitPrice());
+            invoice1.setItemId(ivm.getItemId());
+            invoice1.setSubtotal(ivm.getSubtotal());
+            invoice1.setTax(ivm.getTax());
+            invoice1.setProcessingFee(ivm.getProcessingFee());
+            invoice1.setTotal(ivm.getTotal());
+
+            invoiceRepository.save(invoice1);
+
+   }
+
+    public void deleteInvoiceById(int id){
+        invoiceRepository.deleteById(id);
+    }
+
+   public InvoiceViewModel createANewInvoice(InvoiceViewModel ivm){
+       if(ivm.getQuantity() <= 0){
+           throw new IllegalArgumentException("Quantity must be greater than zero");
+       }
+
+       switch(ivm.getItemType()){
+           case "Games":
+               Optional<Game> foundGame = gameRepository.findById(ivm.getItemId());
+               if(ivm.getQuantity() > foundGame.get().getQuantity()){
+                   throw new IllegalArgumentException("You can't buy more games than we have in stock");
+               } else {
+                   foundGame.get().setQuantity(foundGame.get().getQuantity() - ivm.getQuantity());
+                   gameRepository.save(foundGame.get());
+               }
+               break;
+           case "T-shirts":
+               Optional<Tshirt> foundTshirt = tshirtRepository.findById(ivm.getItemId());
+               if(ivm.getQuantity() > foundTshirt.get().getQuantity()){
+                   throw new IllegalArgumentException("Out of stock");
+               } else {
+                   foundTshirt.get().setQuantity(foundTshirt.get().getQuantity() - ivm.getQuantity());
+                   tshirtRepository.save(foundTshirt.get());
+               }
+               break;
+           case "Consoles":
+               Optional<Console> foundConsole = consoleRepository.findById(ivm.getItemId());
+               if(ivm.getQuantity() > foundConsole.get().getQuantity()){
+                   throw new IllegalArgumentException("Out of stock");
+               } else {
+                   foundConsole.get().setQuantity(foundConsole.get().getQuantity() - ivm.getQuantity());
+                   consoleRepository.save(foundConsole.get());
+               }
+               break;
+           default:
+               throw new IllegalArgumentException("We don't sell this");
+       }
+
+       BigDecimal quantityAsBigDecmial = new BigDecimal(ivm.getQuantity());
+
+       ivm.setSubtotal(ivm.getUnitPrice().multiply(quantityAsBigDecmial));
+
+
+       Optional<SalesTaxRate> salesTaxRate = salesTaxRepository.findById(ivm.getState());
+       System.out.println(salesTaxRate);
+
+
+       ivm.setTax(salesTaxRate.get().getRate());
+
+       System.out.println(ivm.getSubtotal());
+       System.out.println(ivm.getTax());
+
+       BigDecimal originalSubTotal = ivm.getSubtotal();
+       BigDecimal taxAmount = ivm.getSubtotal().multiply(ivm.getTax());
+
+       System.out.println(ivm.getSubtotal());
+
+       Optional<ProcessingFees> processingFeesOptional = processingFeeRepository.findById(ivm.getItemType());
+
+       ivm.setProcessingFee(processingFeesOptional.get().getFee());
+
+       if(ivm.getQuantity() > 10){
+           ivm.setProcessingFee(ivm.getProcessingFee().add(new BigDecimal("15.49")));
+       }
+
+       ivm.setTotal(ivm.getSubtotal().add(ivm.getProcessingFee()));
+
+
+       Invoice invoice = new Invoice();
+
+
+       System.out.println(invoice.getInvoiceId());
+
+       invoice.setName(ivm.getName());
+       invoice.setStreet(ivm.getStreet());
+       invoice.setCity(ivm.getCity());
+       invoice.setState(ivm.getState());
+       invoice.setZipCode(ivm.getZipCode());
+       invoice.setItemType(ivm.getItemType());
+       invoice.setQuantity(ivm.getQuantity());
+       invoice.setItemId(ivm.getItemId());
+       invoice.setUnitPrice(ivm.getUnitPrice());
+       invoice.setSubtotal(ivm.getSubtotal());
+       invoice.setTax(ivm.getTax());
+       invoice.setProcessingFee(ivm.getProcessingFee());
+       invoice.setTotal(ivm.getTotal());
+
+
+       invoice = invoiceRepository.save(invoice);
+
+       ivm.setInvoiceId(invoice.getInvoiceId());
+
+       return ivm;
+
+   }
+
+    public List<InvoiceViewModel> getAllInvoices(){
+
+        List<Invoice> invoiceList = invoiceRepository.findAll();
+
+        List<InvoiceViewModel> ivmList = new ArrayList<>();
+
+        for(Invoice invoice : invoiceList){
+            InvoiceViewModel ivm = buildInvoiceViewModel(invoice);
+            ivmList.add(ivm);
+        }
+
+        return ivmList;
+    }
+
+    private InvoiceViewModel buildInvoiceViewModel(Invoice invoice){
+
+        InvoiceViewModel newInvoice = new InvoiceViewModel();
+        newInvoice.setInvoiceId(invoice.getInvoiceId());
+        newInvoice.setName(invoice.getName());
+        newInvoice.setStreet(invoice.getStreet());
+        newInvoice.setCity(invoice.getCity());
+        newInvoice.setState(invoice.getState());
+        newInvoice.setZipCode(invoice.getZipCode());
+        newInvoice.setItemType(invoice.getItemType());
+        newInvoice.setItemId(invoice.getItemId());
+        newInvoice.setUnitPrice(invoice.getUnitPrice());
+        newInvoice.setQuantity(invoice.getQuantity());
+        newInvoice.setSubtotal((invoice.getSubtotal()));
+
+        newInvoice.setTax(invoice.getTax());
+        newInvoice.setProcessingFee(invoice.getProcessingFee());
+        newInvoice.setTotal(invoice.getTotal());
+
+        return newInvoice;
+   }
 
 }
