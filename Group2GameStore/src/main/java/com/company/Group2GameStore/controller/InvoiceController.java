@@ -25,43 +25,29 @@ public class InvoiceController {
     }
 
     //Find all invoice, filter by name?
-//    @RequestMapping(value="/invoice", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public List<Invoice> getAllInvoice(@RequestParam(required = false) String name) {
-//        if (name != null) {
-//            return invoiceRepository.findByName(name);
-//        }
-//        return invoiceRepository.findAll();
-//    }
+    @RequestMapping(value="/invoice", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<InvoiceViewModel> getAllInvoice() {
+        return serviceLayer.getAllInvoices();
+    }
 //
 //    //Find by id
-//    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.GET)
-//    @ResponseStatus(HttpStatus.OK)
-//    public Invoice getInvoiceById(@PathVariable int id) {
-//        Optional<Invoice> invoice = invoiceRepository.findById(id);
-//        if(invoice.isPresent() == false) {
-//            throw new IllegalArgumentException("Invalid Id");
-//        }
-//
-//        return invoice.get();
-//    }
+    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public InvoiceViewModel getInvoiceById(@PathVariable int id) {
+        return serviceLayer.getInvoiceById(id);
+    }
 //
 ////    Update by id
-//    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.PUT)
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void updateInvoiceById(@PathVariable int id, @RequestBody Invoice invoice) {
-//        if (invoice.getInvoiceId() == null) {
-//            invoice.setInvoiceId(id);
-//        } else if (invoice.getInvoiceId() != id) {
-//            throw new IllegalArgumentException("Id does not match");
-//        }
-//
-//        invoiceRepository.save(invoice);
-//    }
+    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateInvoiceById(@PathVariable int id, @RequestBody InvoiceViewModel ivm) {
+        serviceLayer.updateInvoiceById(ivm);
+    }
 //
 //    //Delete by id
-//    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.DELETE)
-//    @ResponseStatus(HttpStatus.NO_CONTENT)
-//    public void deleteInvoice(@PathVariable int id) { invoiceRepository.deleteById(id);}
+    @RequestMapping(value = "/invoice/{id}", method = RequestMethod.DELETE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteInvoice(@PathVariable int id) { serviceLayer.deleteInvoiceById(id);}
 
 }

@@ -180,19 +180,6 @@ public class ServiceLayer {
         tshirtRepository.deleteById(id);
    }
 
-   public List<InvoiceViewModel> getAllInvoices(){
-
-        List<Invoice> invoiceList = invoiceRepository.findAll();
-
-        List<InvoiceViewModel> ivmList = new ArrayList<>();
-
-        for(Invoice invoice : invoiceList){
-            InvoiceViewModel ivm = buildInvoiceViewModel(invoice);
-            ivmList.add(ivm);
-        }
-
-        return ivmList;
-   }
 
    public InvoiceViewModel getInvoiceById(int id){
         Optional<Invoice> invoice = invoiceRepository.findById(id);
@@ -205,31 +192,31 @@ public class ServiceLayer {
 
    }
 
+   public void updateInvoiceById(InvoiceViewModel ivm){
 
+            Invoice invoice1 = new Invoice();
+            invoice1.setInvoiceId(ivm.getInvoiceId());
+            invoice1.setName(ivm.getName());
+            invoice1.setStreet(ivm.getStreet());
+            invoice1.setCity(ivm.getCity());
+            invoice1.setState(ivm.getState());
+            invoice1.setZipCode(ivm.getZipCode());
+            invoice1.setItemType(ivm.getItemType());
+            invoice1.setQuantity(ivm.getQuantity());
+            invoice1.setUnitPrice(ivm.getUnitPrice());
+            invoice1.setItemId(ivm.getItemId());
+            invoice1.setSubtotal(ivm.getSubtotal());
+            invoice1.setTax(ivm.getTax());
+            invoice1.setProcessingFee(ivm.getProcessingFee());
+            invoice1.setTotal(ivm.getTotal());
 
+            invoiceRepository.save(invoice1);
 
-//    Business Rules
-//
-//    Sales tax applies only to the cost of the items.
-//
-//    Sales tax does not apply to any processing fees for an invoice.
-//
-//    The processing fee is applied only once per order, regardless of the number of items in the order, unless the number of items in the order is greater than 10, in which case an additional processing fee of $15.49 is applied to the order.
-//
-//    The order-processing logic must properly update the quantity available for the item in the order.
-//
-//    Order quantity must be greater than zero.
-//
-//    Order quantity must be less than or equal to the number of items available in inventory.
-//
-//    The order must contain a valid state code.
-//
-//    The REST API must properly handle and report all violations of business rules.
-//
+   }
 
-    //        if(newInvoice.getQuantity() <= 0){
-    //            throw new IllegalArgumentException("Quantity must be greater than 0");
-    //        }
+    public void deleteInvoiceById(int id){
+        invoiceRepository.deleteById(id);
+    }
 
    public InvoiceViewModel createANewInvoice(InvoiceViewModel ivm){
        if(ivm.getQuantity() <= 0){
@@ -268,19 +255,6 @@ public class ServiceLayer {
                throw new IllegalArgumentException("We don't sell this");
        }
 
-//       List<SalesTaxRate> allStates = new ArrayList<>();
-//
-//       allStates = salesTaxRepository.findAll();
-//
-//       for(SalesTaxRate state : allStates){
-//           if (ivm.getState().equals(state)){
-//               System.out.println("good");
-//           } else {
-//               throw new IllegalArgumentException("Please enter a valid state");
-//           }
-//       }
-
-
        BigDecimal quantityAsBigDecmial = new BigDecimal(ivm.getQuantity());
 
        ivm.setSubtotal(ivm.getUnitPrice().multiply(quantityAsBigDecmial));
@@ -313,6 +287,9 @@ public class ServiceLayer {
 
        Invoice invoice = new Invoice();
 
+
+       System.out.println(invoice.getInvoiceId());
+
        invoice.setName(ivm.getName());
        invoice.setStreet(ivm.getStreet());
        invoice.setCity(ivm.getCity());
@@ -327,25 +304,28 @@ public class ServiceLayer {
        invoice.setProcessingFee(ivm.getProcessingFee());
        invoice.setTotal(ivm.getTotal());
 
+
+       invoice = invoiceRepository.save(invoice);
+
        ivm.setInvoiceId(invoice.getInvoiceId());
-
-
-       invoiceRepository.save(invoice);
 
        return ivm;
 
-       //Validate/check bussines logic i.e object exists, quantity is not <= 0
-       //ivm is not null, item type exists and is valid i.e tshirt,game,console
-
-       //Building a regular invoice object
-       //set properties from ivm that was passed into this method (name,street,city,state,zipcode,itemtype,itemid,quanity,etc)
-
-
-       //Update the qunaity of whatever item is bought
-
    }
 
+    public List<InvoiceViewModel> getAllInvoices(){
 
+        List<Invoice> invoiceList = invoiceRepository.findAll();
+
+        List<InvoiceViewModel> ivmList = new ArrayList<>();
+
+        for(Invoice invoice : invoiceList){
+            InvoiceViewModel ivm = buildInvoiceViewModel(invoice);
+            ivmList.add(ivm);
+        }
+
+        return ivmList;
+    }
 
     private InvoiceViewModel buildInvoiceViewModel(Invoice invoice){
 
@@ -368,8 +348,5 @@ public class ServiceLayer {
 
         return newInvoice;
    }
-
-
-
 
 }

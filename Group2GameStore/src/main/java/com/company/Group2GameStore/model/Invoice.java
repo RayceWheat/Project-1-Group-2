@@ -19,10 +19,10 @@ public class Invoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer invoiceId;
 
-//    @NotEmpty
+    //    @NotEmpty
     private String name;
 
-//    @NotEmpty
+    //    @NotEmpty
     private String street;
 //    @NotEmpty
     private String city;
