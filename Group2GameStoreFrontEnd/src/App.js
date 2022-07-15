@@ -1,5 +1,6 @@
 import './App.css';
 import Games from './Games';
+import Invoice from './Invoice';
 import Tshirts from './Tshirts';
 import Consoles from './Consoles';
 
@@ -10,6 +11,8 @@ function App() {
       <Games />
       <Tshirts />
       <Consoles />
+      <Invoice />
+    </main>
   );
 }
 
