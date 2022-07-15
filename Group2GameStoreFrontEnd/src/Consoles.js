@@ -60,14 +60,28 @@ function Consoles() {
     //     //setConsole(clone);
     // }
 
-    function handleChange(evt) {
-        this.setState({value: evt.target.value});
-      }
+    // function handleChange(evt) {
+    //     this.setState({value: evt.target.value});
+    //   }
     
-    function handleSubmit(evt) {
-        alert('A name was submitted: ' + this.state.value);
-        evt.preventDefault();
-      }
+    // function handleSubmit(evt) {
+    //     alert('A name was submitted: ' + this.state.value);
+    //     evt.preventDefault();
+    //   }
+
+    function titleClick(event){       
+        event.preventDefault();
+        if(document.getElementById("manufacturer").value == ""){
+            setConsoles([]);
+        } else {
+            fetch(`http://localhost:8080/consoles/manufacturer?manufacturer=${document.getElementById("manufacturer").value}`)
+            .then(response => response.json())
+            .then(result => setConsoles(result))
+            .catch(error => console.log(error))
+        }
+    }
+
+
 
 
     function notify({ action, console, error}) {
@@ -118,19 +132,11 @@ function Consoles() {
             <div>
                 <h1 id='consoleTitle'>Consoles</h1>
                 <button className="btn btn-primary" type="button" onClick={addClick}>Add a Console</button>
-                {/* <form onSubmit={handleSubmit}>
-                    <div className="mb-3">
-                        <label htmlFor="manufacturer">Manufacturer</label>
-                        <input type="text" id="manufacturer" name="manufacturer"
-                        className="form-control"
-                        value={this.state.value}
-                        onChange={handleChange} 
-                        />
-                    </div>
-                    <div>
-                        <button className="btn btn-primary mr-3" type="submit">Search by manufacturer</button>
-                    </div>
-                </form> */}
+                    <form name="titleForm" onSubmit={titleClick}>
+                        <label htmlFor="manufacturer">Get Console by Manufacturer</label>
+                        <input type="manufacturer" id="manufacturer" name="manufacturer" ></input>
+                        <input type="submit" value="Submit" ></input>
+                    </form>
                 {/* <select name="esrbRating" onChange={fetchByEsrbRating}>
                     <option value="">Get Games by ESRB Rating</option>
                     <option value="Everyone">Everyone</option>
