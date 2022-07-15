@@ -29,8 +29,8 @@ public class ConsoleController {
         return serviceLayer.getConsoleById(id);
     }
 
-    @GetMapping("/consoles/manufacturer/{manufacturer}")
-    public List<Console> getConsoleByManufacturer(@PathVariable String manufacturer){
+    @GetMapping("/consoles/manufacturer")
+    public List<Console> getConsoleByManufacturer(@RequestParam String manufacturer){
         return serviceLayer.getConsoleByManufacturer(manufacturer);
     }
 
