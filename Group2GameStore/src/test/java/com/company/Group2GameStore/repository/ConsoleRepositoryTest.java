@@ -63,6 +63,28 @@ public class ConsoleRepositoryTest {
     }
 
     @Test
+    public void getAllConsolesByManufacturer() {
+        Console console1 = new Console();
+        console1.setModel("Switch");
+        console1.setManufacturer("Nintendo");
+        console1.setMemoryAmount("256gb");
+        console1.setProcessor("NotAGoodOne");
+        console1.setPrice(new BigDecimal("299.99"));
+        console1.setQuantity(5);
+        Console console2 = new Console();
+        console2.setModel("PlayStation5");
+        console2.setManufacturer("Sony");
+        console2.setMemoryAmount("300gb");
+        console2.setProcessor("BigSuperGoodOne");
+        console2.setPrice(new BigDecimal("399.99"));
+        this.consoleRepo.save(console1);
+        this.consoleRepo.save(console2);
+        List<Console> allConsoles = this.consoleRepo.findConsoleByManufacturer("Sony");
+        Assert.assertEquals(1L, (long)allConsoles.size());
+    }
+
+
+    @Test
     public void updateConsole() {
         Console console1 = new Console();
         console1.setModel("Switch");

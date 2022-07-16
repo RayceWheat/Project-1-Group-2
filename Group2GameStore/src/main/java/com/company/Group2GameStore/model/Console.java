@@ -25,6 +25,7 @@ public class Console {
     @NotEmpty
     private String manufacturer;
 
+    @NotEmpty
     @Column(name = "memory_amount")
     private String memoryAmount;
 
