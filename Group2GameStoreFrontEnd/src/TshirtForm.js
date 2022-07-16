@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 function TshirtForm({tshirt: initialTshirt, notify}) {
     const [tshirt, setTshirt] = useState(initialTshirt);
-    const isAdd = initialTshirt === 0;
+    const isAdd = initialTshirt.id === 0;
 
     function handleChange(event) {
         const clone = { ...tshirt };
@@ -13,10 +13,17 @@ function TshirtForm({tshirt: initialTshirt, notify}) {
     function handleSubmit(e) {
         e.preventDefault();
 
-        
-        const url = `http://localhost:8080/tshirt`;
+        console.log(tshirt);
+
+        console.log(tshirt.id);
+
+        console.log("Handle Submit has been called");
+
+        const url = "http://localhost:8080/tshirt";
         const method = isAdd ? "POST" : "PUT";
         const expectedStatus = isAdd ? 201 : 204;
+
+        
 
         const init = {
             method,
@@ -44,11 +51,13 @@ function TshirtForm({tshirt: initialTshirt, notify}) {
             tshirt: result
         }))
         .catch(error => notify({ error: error }));
+
+        console.log("fetch has been called");
     }
 
     return (
         <>
-            <h1>{tshirt.tshirtId > 0 ? "Edit" : "Add"} Tshirts</h1>
+            <h1>{tshirt.id > 0 ? "Edit" : "Add"} Tshirts</h1>
             <form onSubmit={handleSubmit}>
                 <div className="mb-3">
                     <label htmlFor="tshirt">Tshirt</label>
