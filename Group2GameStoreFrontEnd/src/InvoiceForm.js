@@ -15,6 +15,7 @@ function InvoiceForm({ invoice: initialInvoice, notify }) {
     function handleSubmit(evt){
         evt.preventDefault();
         
+        console.log(invoice);
         console.log("submit/save has been called");
 
         const url = "http://localhost:8080/invoice";

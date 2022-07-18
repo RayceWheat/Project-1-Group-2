@@ -80,6 +80,7 @@ function Invoice() {
                             <th>Item Type</th>
                             <th>Item ID</th>
                             <th>Quantity</th>
+                            <th>Total</th>
                         </tr>
                     </tbody>
                     <tbody>
