@@ -7,6 +7,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -132,7 +133,8 @@ public class ConsoleControllerTest {
         console1.setId(2);
 
         Optional<Console> optConsole = Optional.of(console1);
-        doReturn(optConsole).when(serviceLayer).getConsoleById(2);
+        Console console2 = Mockito.mock(Console.class);
+        doReturn(console2).when(serviceLayer).getConsoleById(2);
 
         String inputJson = mapper.writeValueAsString(console1);
 

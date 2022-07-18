@@ -43,7 +43,6 @@ public class ServiceLayer {
         this.tshirtRepository = tshirtRepository;
     }
 
-
     @Transactional
 
     public List<Console> getAllConsoles(){
@@ -91,7 +90,6 @@ public class ServiceLayer {
         consoleRepository.deleteById(id);
     }
 
-    public List<Game> getAllGames(){
         return gameRepository.findAll();
     }
 
@@ -148,6 +146,8 @@ public class ServiceLayer {
         gameRepository.deleteById(id);
     }
 
+    //T-shirt section
+
     public Tshirt createTShirt(Tshirt tshirt){
         return tshirtRepository.save(tshirt);
     }
@@ -195,6 +195,7 @@ public class ServiceLayer {
         tshirtRepository.deleteById(id);
    }
 
+   //In voice section
 
    public InvoiceViewModel getInvoiceById(int id){
         Optional<Invoice> invoice = invoiceRepository.findById(id);
