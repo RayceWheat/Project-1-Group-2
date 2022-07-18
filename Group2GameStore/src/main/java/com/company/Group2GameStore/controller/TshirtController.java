@@ -1,5 +1,6 @@
 package com.company.Group2GameStore.controller;
 
+import com.company.Group2GameStore.model.Game;
 import com.company.Group2GameStore.model.Tshirt;
 import com.company.Group2GameStore.repository.TshirtRepository;
 import com.company.Group2GameStore.service.ServiceLayer;
@@ -29,8 +30,24 @@ public class TshirtController {
     //Find all Tshirts, filter by color/size
     @RequestMapping(value="/tshirt", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Tshirt> getAllTshirts(@RequestParam(required = false) String color, String size) {
-        return serviceLayer.getAllTShirts(color, size);
+    public List<Tshirt> getAllTshirts() {
+        return serviceLayer.getAllTShirts();
+    }
+
+    //findbycolor
+    @RequestMapping(value = "/tshirt/color/{color}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Tshirt> getTshirtsByColor(@PathVariable String color) {
+
+        return serviceLayer.findByColor(color);
+    }
+    //findbysize
+
+    @RequestMapping(value = "/tshirt/size/{size}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Tshirt> getTshirtsBySize(@PathVariable String size) {
+
+        return serviceLayer.findBySize(size);
     }
 
     //Find by id

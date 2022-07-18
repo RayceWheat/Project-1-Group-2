@@ -19,7 +19,7 @@ function Tshirts() {
         if (e.target.value ==="") {
             setTshirts([]);
         } else {
-            fetch("http://localhost:8080/tshirt?color=" + e.target.value)
+            fetch("http://localhost:8080/tshirt/color/" + e.target.value)
                 .then(response => response.json())
                 .then(result => setTshirts(result))
                 .catch(console.log);
@@ -30,7 +30,7 @@ function Tshirts() {
         if (e.target.value ==="") {
             setTshirts([]);
         } else {
-            fetch("http://localhost:8080/tshirt?size=" + e.target.value)
+            fetch("http://localhost:8080/tshirt/size/" + e.target.value)
                 .then(response => response.json())
                 .then(result => setTshirts(result))
                 .catch(console.log);

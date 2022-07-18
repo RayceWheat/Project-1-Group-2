@@ -48,6 +48,7 @@ public class ServiceLayerTest {
 
     }
 
+    //mock
     private void setUpGameRepositoryMock() {
         gameRepository = mock(GameRepository.class);
         Game game = new Game();
@@ -172,6 +173,8 @@ public class ServiceLayerTest {
         doReturn(invoiceList).when(invoiceRepository).findAll();
     }
 
+
+    //find All
     @Test
     public void findAllInvoices() {
         List<InvoiceViewModel> fromService = service.getAllInvoices();
@@ -223,13 +226,26 @@ public class ServiceLayerTest {
     
     @Test
     public void findAllTshirts() {
-        List<Game> gameSearch = service.getAllGames();
+        List<Tshirt> tshirtSearch = service.getAllTShirts();
 
-        assertEquals(1, gameSearch.size());
+        assertEquals(1, tshirtSearch.size());
     }
 
+    @Test
+    public void findAllTshirtsByColor() {
+        List<Tshirt> tshirtSearch = service.findByColor("gold");
 
+        assertEquals(1, tshirtSearch.size());
+    }
 
+    @Test
+    public void findAllTshirtsBySize() {
+        List<Tshirt> tshirtSearch = service.findBySize("s");
+
+        assertEquals(1, tshirtSearch.size());
+    }
+
+    //Create
     @Test
     public void saveFindGame() {
         Game game = new Game();
@@ -244,6 +260,7 @@ public class ServiceLayerTest {
         Game fromService = service.findGameById(game.getGameId());
         assertEquals(game, fromService);
     }
+
 
     @Test
     public void saveFindConsole() {
@@ -260,5 +277,19 @@ public class ServiceLayerTest {
         assertEquals(console1, fromService);
     }
 
+    @Test
+    public void saveFindTshirt() {
+        Tshirt tshirt = new Tshirt();
+        tshirt.settShirtId(1);
+        tshirt.setTshirt("League of Legends");
+        tshirt.setColor("gold");
+        tshirt.setSize("s");
+        tshirt.setDescription("game merch");
+        tshirt.setPrice(new BigDecimal(99.99));
+        tshirt.setQuantity(100);
+
+        Tshirt fromService = service.getTshirtById(tshirt.gettShirtId());
+        assertEquals(tshirt, fromService);
+    }
 
 }

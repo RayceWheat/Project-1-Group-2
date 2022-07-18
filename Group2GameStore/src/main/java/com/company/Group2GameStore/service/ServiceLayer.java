@@ -156,17 +156,27 @@ public class ServiceLayer {
 
 
 
-    public List<Tshirt> getAllTShirts(String color, String size){
-        if (color != null) {
-            return tshirtRepository.findByColor(color);
-        }
-        if (size != null) {
-            return tshirtRepository.findBySize(size);
-        }
-        if (color != null && size != null) {
-            return tshirtRepository.findByColorAndSize(color, size);
-        }
+    public List<Tshirt> getAllTShirts(){
+//        if (color != null) {
+//            return tshirtRepository.findByColor(color);
+//        }
+//        if (size != null) {
+//            return tshirtRepository.findBySize(size);
+//        }
+//        if (color != null && size != null) {
+//            return tshirtRepository.findByColorAndSize(color, size);
+//        }
         return tshirtRepository.findAll();
+    }
+    public List<Tshirt> findByColor(String color) {
+
+            return tshirtRepository.findByColor(color);
+
+    }
+    public List<Tshirt> findBySize(String size) {
+
+        return tshirtRepository.findBySize(size);
+
     }
 
     public Tshirt getTshirtById(int id){
@@ -271,9 +281,9 @@ public class ServiceLayer {
                throw new IllegalArgumentException("We don't sell this");
        }
 
-       BigDecimal quantityAsBigDecmial = new BigDecimal(ivm.getQuantity());
+       BigDecimal quantityAsBigDecimal = new BigDecimal(ivm.getQuantity());
 
-       ivm.setSubtotal(ivm.getUnitPrice().multiply(quantityAsBigDecmial));
+       ivm.setSubtotal(ivm.getUnitPrice().multiply(quantityAsBigDecimal));
 
 
        Optional<SalesTaxRate> salesTaxRate = salesTaxRepository.findById(ivm.getState());
