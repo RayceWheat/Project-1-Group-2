@@ -1,5 +1,6 @@
 package com.company.Group2GameStore.controller;
 
+import com.company.Group2GameStore.exceptions.NotFoundException;
 import com.company.Group2GameStore.model.Game;
 import com.company.Group2GameStore.repository.GameRepository;
 import com.company.Group2GameStore.service.ServiceLayer;
@@ -21,8 +22,29 @@ public class GameController {
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> getAllGames(@RequestParam(required=false) String studio, @RequestParam(required=false) String esrbRating, @RequestParam(required=false) String title) {
-        return serviceLayer.getAllGames(studio, esrbRating, title);
+    public List<Game> getAllGames() {
+        return serviceLayer.getAllGames();
+    }
+
+    @RequestMapping(value = "/games/title/{title}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> getGamesByTitle(@PathVariable String title) {
+
+        return serviceLayer.getGamesByTitle(title);
+    }
+
+    @RequestMapping(value = "/games/esrbRating/{esrbRating}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> getGamesByEsrbRating(@PathVariable String esrbRating) {
+
+        return serviceLayer.getGamesByEsrbRating(esrbRating);
+    }
+
+    @RequestMapping(value = "/games/studio/{studio}", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> getGamesByStudio(@PathVariable String studio) {
+
+        return serviceLayer.getGamesByStudio(studio);
     }
 
     // create game
@@ -42,14 +64,14 @@ public class GameController {
 
     // update a game
     @RequestMapping(value = "/games", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
 
     public void updateGame(@RequestBody @Valid Game game) {
         serviceLayer.updateGame(game);
     }
 
     @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Game updateGameById(@PathVariable int id, @RequestBody @Valid Game game){
         return serviceLayer.updateGameById(id, game);
     }
@@ -57,7 +79,7 @@ public class GameController {
 
     // delete game
     @RequestMapping(value = "/games/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGameById(@PathVariable int id) {
         serviceLayer.deleteGameById(id);
     }

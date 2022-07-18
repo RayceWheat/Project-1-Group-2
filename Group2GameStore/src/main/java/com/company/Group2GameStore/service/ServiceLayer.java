@@ -43,8 +43,6 @@ public class ServiceLayer {
         this.tshirtRepository = tshirtRepository;
     }
 
-
-    // Console sections
     @Transactional
 
     public List<Console> getAllConsoles(){
@@ -92,22 +90,26 @@ public class ServiceLayer {
         consoleRepository.deleteById(id);
     }
 
-    // Game section
-
-    public List<Game> getAllGames(String studio, String esrbRating, String title){
-        if (studio != null) {
-            return gameRepository.findGamesByStudio(studio);
-        }
-        if (esrbRating != null) {
-            return gameRepository.findGamesByEsrbRating(esrbRating);
-        }
-        if (title != null) {
-            return gameRepository.findGamesByTitle(title);
-        }
         return gameRepository.findAll();
     }
 
+    public List<Game> getGamesByTitle(String title){
+
+        return gameRepository.findGamesByTitle(title);
+    }
+
+    public List<Game> getGamesByEsrbRating(String esrbRating){
+
+        return gameRepository.findGamesByEsrbRating(esrbRating);
+    }
+
+    public List<Game> getGamesByStudio(String studio){
+
+        return gameRepository.findGamesByStudio(studio);
+    }
+
     public Game addGame(Game game){
+
         return gameRepository.save(game);
     }
 
@@ -149,6 +151,13 @@ public class ServiceLayer {
     public Tshirt createTShirt(Tshirt tshirt){
         return tshirtRepository.save(tshirt);
     }
+
+    public void updateTshirt(Tshirt tshirt){
+        tshirtRepository.save(tshirt);
+    }
+
+
+
 
     public List<Tshirt> getAllTShirts(String color, String size){
         if (color != null) {
@@ -238,6 +247,7 @@ public class ServiceLayer {
                } else {
                    foundGame.get().setQuantity(foundGame.get().getQuantity() - ivm.getQuantity());
                    gameRepository.save(foundGame.get());
+                   ivm.setUnitPrice(foundGame.get().getPrice());
                }
                break;
            case "T-shirts":
@@ -247,6 +257,7 @@ public class ServiceLayer {
                } else {
                    foundTshirt.get().setQuantity(foundTshirt.get().getQuantity() - ivm.getQuantity());
                    tshirtRepository.save(foundTshirt.get());
+                   ivm.setUnitPrice((foundTshirt.get().getPrice()));
                }
                break;
            case "Consoles":
@@ -256,6 +267,7 @@ public class ServiceLayer {
                } else {
                    foundConsole.get().setQuantity(foundConsole.get().getQuantity() - ivm.getQuantity());
                    consoleRepository.save(foundConsole.get());
+                   ivm.setUnitPrice(foundConsole.get().getPrice());
                }
                break;
            default:
@@ -281,6 +293,8 @@ public class ServiceLayer {
 
        System.out.println(ivm.getSubtotal());
 
+
+
        Optional<ProcessingFees> processingFeesOptional = processingFeeRepository.findById(ivm.getItemType());
 
        ivm.setProcessingFee(processingFeesOptional.get().getFee());
@@ -289,7 +303,9 @@ public class ServiceLayer {
            ivm.setProcessingFee(ivm.getProcessingFee().add(new BigDecimal("15.49")));
        }
 
-       ivm.setTotal(ivm.getSubtotal().add(ivm.getProcessingFee()));
+       BigDecimal taxTotal = taxAmount.add(originalSubTotal);
+
+       ivm.setTotal(taxTotal.add(ivm.getProcessingFee()));
 
 
        Invoice invoice = new Invoice();
@@ -318,6 +334,11 @@ public class ServiceLayer {
 
        return ivm;
 
+   }
+
+
+   public void updateInvoice(Invoice invoice){
+        invoiceRepository.save(invoice);
    }
 
     public List<InvoiceViewModel> getAllInvoices(){

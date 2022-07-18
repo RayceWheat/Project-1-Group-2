@@ -2,13 +2,14 @@ function InvoiceCard({ invoice, notify }) {
 
     function handleDelete(){
         console.log("Delete has been called");
-        fetch(`http://localhost:8080/invoices/${invoice.invoiceId}`, {method: "DELETE"})
+        fetch(`http://localhost:8080/invoice/${invoice.invoiceId}`, {method: "DELETE"})
             .then(() => notify({ action: "delete", invoices: invoice}))
             .catch(error => notify({ action: "delete", error: error}));
     }
 
     return(
-        <tr key={invoice.name}>
+        <tr key={invoice.invoiceId}>
+            <td>{invoice.name}</td>
             <td>{invoice.street}</td>
             <td>{invoice.city}</td>
             <td>{invoice.state}</td>
@@ -16,6 +17,7 @@ function InvoiceCard({ invoice, notify }) {
             <td>{invoice.itemType}</td>
             <td>{invoice.itemId}</td>
             <td>{invoice.quantity}</td>
+            <td>{invoice.total}</td>
             <td>
                 <button id="deleteButton" className="btn btn-danger mr-3" type="button" onClick={handleDelete}>Delete</button>
                 <button id="editButton" className="btn btn-secondary" type="button" onClick={() => notify({ action: "edit-form", invoice: invoice })}>Edit</button>

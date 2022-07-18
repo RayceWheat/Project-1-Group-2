@@ -48,6 +48,13 @@ public class TshirtController {
         serviceLayer.updateTshirtById(id, tshirt);
     }
 
+    @RequestMapping(value = "/tshirt", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateTshirt(@RequestBody Tshirt tshirt) {
+        serviceLayer.updateTshirt( tshirt);
+    }
+
+
     //Delete by id
     @RequestMapping(value = "/tshirt/{id}", method = RequestMethod.DELETE)
     @ResponseStatus(HttpStatus.NO_CONTENT)

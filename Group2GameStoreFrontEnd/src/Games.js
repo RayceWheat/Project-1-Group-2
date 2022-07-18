@@ -22,14 +22,15 @@ function Games() {
         setShowForm(true);
     }
 
-    function fetchByTitle(evt){
-        if (evt.target.value === ""){
+    function fetchByTitle(event){       
+        event.preventDefault();
+        if(document.getElementById("title").value === ""){
             setGames([]);
         } else {
-            fetch("http://localhost:8080/games?title=" + evt.target.value)
-                .then(response => response.json())
-                .then(result => setGames(result))
-                .catch(console.log);
+            fetch(`http://localhost:8080/games/title=${document.getElementById("title").value}`)
+            .then(response => response.json())
+            .then(result => setGames(result))
+            .catch(error => console.log(error))
         }
     }
 
@@ -37,23 +38,26 @@ function Games() {
         if (evt.target.value === ""){
             setGames([]);
         } else {
-            fetch("http://localhost:8080/games?esrbRating=" + evt.target.value)
+            fetch("http://localhost:8080/games/esrbRating=" + evt.target.value)
                 .then(response => response.json())
                 .then(result => setGames(result))
                 .catch(console.log);
         }
     }
 
-    function fetchByStudio(evt){
-        if (evt.target.value === ""){
+        function fetchByStudio(event){       
+        event.preventDefault();
+        if(document.getElementById("studio").value === ""){
             setGames([]);
         } else {
-            fetch("http://localhost:8080/games?Studio=" + evt.target.value)
-                .then(response => response.json())
-                .then(result => setGames(result))
-                .catch(console.log);
+            fetch(`http://localhost:8080/games/studio=${document.getElementById("studio").value}`)
+            .then(response => response.json())
+            .then(result => setGames(result))
+            .catch(error => console.log(error))
         }
     }
+
+
 
     function notify({ action, game, error }) {
 
@@ -103,31 +107,41 @@ function Games() {
             <div>
                 <h1 id='customerTitle'>Games</h1>
                 <button className="btn btn-primary" type="button" onClick={addClick}>Add a Game</button>
+                <form name="titleForm" onSubmit={fetchByTitle}>
+                        <label htmlFor="title">Get Game by Title</label>
+                        <input type="title" id="title" name="title" ></input>
+                        <input type="submit" value="Submit" ></input>
+                </form>
+                <form name="titleForm" onSubmit={fetchByStudio}>
+                        <label htmlFor="title">Get Game by Studio</label>
+                        <input type="studio" id="studio" name="studio" ></input>
+                        <input type="submit" value="Submit" ></input>
+                </form>
                 <select name="esrbRating" onChange={fetchByEsrbRating}>
                     <option value="">Get Games by ESRB Rating</option>
                     <option value="Everyone">Everyone</option>
-                    <option value="Everyone 10+">Everyone 10+</option>
+                  {/* //  <option value="Everyone 10+">Everyone 10+</option> */}
                     <option value="Teen">Teen</option>
-                    <option value="Mature 17+">Mature 17+</option>
-                    <option value="Adults Only 18+">Adults Only 18+</option>
+                    <option value="Mature">Mature</option>
+                    <option value="Adults Only">Adults Only</option>
                     <option value="Rating Pending">Rating Pending</option>
                 </select>
-                <table id='games'>
-                    <tbody>
-                        <tr>
-                            <th>Title</th>
-                            <th>ESRB Rating</th>
-                            <th>Description</th>
-                            <th>Price</th>
-                            <th>Studio</th>
-                            <th>quantity</th>
-                        </tr>
-                    </tbody>
-                    <tbody>
-                        {games.map(g => <GameCard key={g.gameId} game={g} notify={notify} />)}
-                    </tbody>
-                </table>
             </div>
+
+            <tbody>
+                <tr>
+                    <th>Title</th>
+                    <th>ESRB Rating</th>
+                    <th>Description</th>
+                    <th>Price</th>
+                    <th>Studio</th>
+                    <th>quantity</th>
+                </tr>
+            </tbody>
+            <tbody>
+                {games.map(g => <GameCard key={g.gameId} game={g} notify={notify} />)}
+            </tbody>
+            
         </>
     )
 }

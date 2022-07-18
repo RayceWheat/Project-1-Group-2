@@ -1,7 +1,9 @@
 package com.company.Group2GameStore.controller;
 
+import com.company.Group2GameStore.model.Console;
 import com.company.Group2GameStore.model.Game;
 import com.company.Group2GameStore.repository.GameRepository;
+import com.company.Group2GameStore.service.ServiceLayer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import org.junit.Before;
 import org.junit.Test;
@@ -32,7 +34,7 @@ public class GameControllerTest {
     MockMvc mockMvc;
 
     @MockBean
-    GameRepository gameRepository;
+    ServiceLayer serviceLayer;
 
     ObjectMapper mapper = new ObjectMapper();
 
@@ -84,7 +86,7 @@ public class GameControllerTest {
 
         String inputJson = mapper.writeValueAsString(inputGame);
 
-        doReturn(game).when(gameRepository).save(inputGame);
+        doReturn(game).when(serviceLayer).addGame(inputGame);
 
 
 
@@ -101,7 +103,7 @@ public class GameControllerTest {
     @Test
     public void shouldReturnGameById() throws Exception {
         Optional<Game> optGame = Optional.of(game);
-        doReturn(optGame).when(gameRepository).findById(1);
+        doReturn(optGame).when(serviceLayer).findGameById(1);
 
         mockMvc.perform(
                         get("/games/1"))
@@ -112,7 +114,7 @@ public class GameControllerTest {
 
     @Test
     public void shouldReturnAllGames() throws Exception {
-        doReturn(allGames).when(gameRepository).findAll();
+        doReturn(allGames).when(serviceLayer).getAllGames();
 
         mockMvc.perform(
                         get("/games"))
@@ -123,10 +125,10 @@ public class GameControllerTest {
 
     @Test
     public void shouldReturnAllGamesByTitle() throws Exception {
-        doReturn(allGames).when(gameRepository).findGamesByTitle("Game of Thrones");
+        doReturn(allGames).when(serviceLayer).getGamesByTitle("Game of Thrones");
 
         mockMvc.perform(
-                        get("/games?title=Game of Thrones"))
+                        get("/games/title/Game of Thrones"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesJson)
                 );
@@ -134,21 +136,21 @@ public class GameControllerTest {
 
     @Test
     public void shouldReturnAllGamesByEsrbRating() throws Exception {
-        doReturn(allGames).when(gameRepository).findGamesByEsrbRating("Teen");
+        doReturn(allGames).when(serviceLayer).getGamesByEsrbRating("Teen");
 
         mockMvc.perform(
-                        get("/games?esrbRating=Teen"))
+                        get("/games/esrbRating/Teen"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesJson)
                 );
     }
 
     @Test
-    public void shouldReturnAllGamesBystudio() throws Exception {
-        doReturn(allGames).when(gameRepository).findGamesByStudio("Warner");
+    public void shouldReturnAllGamesByStudio() throws Exception {
+        doReturn(allGames).when(serviceLayer).getGamesByStudio("Warner");
 
         mockMvc.perform(
-                        get("/games?studio=Warner"))
+                        get("/games/studio/Warner"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesJson)
                 );
@@ -198,29 +200,5 @@ public class GameControllerTest {
                 .andExpect(status().isUnprocessableEntity());
     }
 
-    // double check put route in controller- it's either updating the wrong id or adding a new game in error
-    // status 200- it's updating the wrong id!
-
-//    @Test
-//    public void shouldReturn422StatusCodeIfIdsDoNotMatch() throws Exception {
-//        Game inputGame = new Game();
-//        inputGame.setGameId(1);
-//        inputGame.setTitle("Game of Thrones");
-//        inputGame.setEsrbRating("Mature");
-//        inputGame.setDescription("Awesome Game with numerous alternate endings.");
-//        inputGame.setPrice(new BigDecimal("14.99"));
-//        inputGame.setStudio("Warner Bros Entertainment");
-//        inputGame.setQuantity(25);
-//
-//        String inputJson = mapper.writeValueAsString(inputGame);
-//
-//        mockMvc.perform(
-//                        put("/games/2")
-//                                .content(inputJson)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                )
-//                .andDo(print())
-//                .andExpect(status().isUnprocessableEntity());
-//    }
 
 }

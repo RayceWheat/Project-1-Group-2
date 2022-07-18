@@ -66,7 +66,6 @@ function Invoice() {
     return(
         <>
          
-
             <div id='buttonPanel' className="row mt-2">
                 <h1 id='invoiceTitle'>Invoices</h1>
                 <button className="btn btn-primary" type="button" onClick={addClick}>Purchase a product</button>
@@ -81,6 +80,7 @@ function Invoice() {
                             <th>Item Type</th>
                             <th>Item ID</th>
                             <th>Quantity</th>
+                            <th>Total</th>
                         </tr>
                     </tbody>
                     <tbody>
