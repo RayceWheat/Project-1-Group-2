@@ -27,7 +27,7 @@ function Games() {
         if(document.getElementById("title").value === ""){
             setGames([]);
         } else {
-            fetch(`http://localhost:8080/games?title=${document.getElementById("title").value}`)
+            fetch(`http://localhost:8080/games/title=${document.getElementById("title").value}`)
             .then(response => response.json())
             .then(result => setGames(result))
             .catch(error => console.log(error))
@@ -38,7 +38,7 @@ function Games() {
         if (evt.target.value === ""){
             setGames([]);
         } else {
-            fetch("http://localhost:8080/games?esrbRating=" + evt.target.value)
+            fetch("http://localhost:8080/games/esrbRating=" + evt.target.value)
                 .then(response => response.json())
                 .then(result => setGames(result))
                 .catch(console.log);
@@ -50,7 +50,7 @@ function Games() {
         if(document.getElementById("studio").value === ""){
             setGames([]);
         } else {
-            fetch(`http://localhost:8080/games?studio=${document.getElementById("studio").value}`)
+            fetch(`http://localhost:8080/games/studio=${document.getElementById("studio").value}`)
             .then(response => response.json())
             .then(result => setGames(result))
             .catch(error => console.log(error))
