@@ -1,5 +1,6 @@
 package com.company.Group2GameStore.controller;
 
+import com.company.Group2GameStore.exceptions.NotFoundException;
 import com.company.Group2GameStore.model.Game;
 import com.company.Group2GameStore.repository.GameRepository;
 import com.company.Group2GameStore.service.ServiceLayer;
@@ -25,22 +26,25 @@ public class GameController {
         return serviceLayer.getAllGames();
     }
 
-    @RequestMapping(value = "/games/title", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/title/{title}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> getGamesByTitle(String title) {
+    public List<Game> getGamesByTitle(@PathVariable String title) {
+
         return serviceLayer.getGamesByTitle(title);
     }
 
-    @RequestMapping(value = "/games/esrbRating", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/esrbRating/{esrbRating}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> getGamesByEsrbRating(String esrbRating) {
+    public List<Game> getGamesByEsrbRating(@PathVariable String esrbRating) {
+
         return serviceLayer.getGamesByEsrbRating(esrbRating);
     }
 
-    @RequestMapping(value = "/games/studio", method = RequestMethod.GET)
+    @RequestMapping(value = "/games/studio/{studio}", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> getGamesByStudio(String studio) {
-        return serviceLayer.getGamesByTitle(studio);
+    public List<Game> getGamesByStudio(@PathVariable String studio) {
+
+        return serviceLayer.getGamesByStudio(studio);
     }
 
     // create game

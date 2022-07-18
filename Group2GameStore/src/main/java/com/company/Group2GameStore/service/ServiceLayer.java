@@ -96,18 +96,22 @@ public class ServiceLayer {
     }
 
     public List<Game> getGamesByTitle(String title){
+
         return gameRepository.findGamesByTitle(title);
     }
 
     public List<Game> getGamesByEsrbRating(String esrbRating){
+
         return gameRepository.findGamesByEsrbRating(esrbRating);
     }
 
     public List<Game> getGamesByStudio(String studio){
+
         return gameRepository.findGamesByStudio(studio);
     }
 
     public Game addGame(Game game){
+
         return gameRepository.save(game);
     }
 

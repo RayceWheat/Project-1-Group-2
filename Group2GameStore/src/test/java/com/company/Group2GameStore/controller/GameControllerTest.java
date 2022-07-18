@@ -1,5 +1,6 @@
 package com.company.Group2GameStore.controller;
 
+import com.company.Group2GameStore.model.Console;
 import com.company.Group2GameStore.model.Game;
 import com.company.Group2GameStore.repository.GameRepository;
 import com.company.Group2GameStore.service.ServiceLayer;
@@ -127,7 +128,7 @@ public class GameControllerTest {
         doReturn(allGames).when(serviceLayer).getGamesByTitle("Game of Thrones");
 
         mockMvc.perform(
-                        get("/games/title"))
+                        get("/games/title/Game of Thrones"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesJson)
                 );
@@ -138,7 +139,7 @@ public class GameControllerTest {
         doReturn(allGames).when(serviceLayer).getGamesByEsrbRating("Teen");
 
         mockMvc.perform(
-                        get("/games/Teen"))
+                        get("/games/esrbRating/Teen"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesJson)
                 );
@@ -149,7 +150,7 @@ public class GameControllerTest {
         doReturn(allGames).when(serviceLayer).getGamesByStudio("Warner");
 
         mockMvc.perform(
-                        get("/games/studio"))
+                        get("/games/studio/Warner"))
                 .andExpect(status().isOk())
                 .andExpect(content().json(allGamesJson)
                 );
@@ -199,29 +200,5 @@ public class GameControllerTest {
                 .andExpect(status().isUnprocessableEntity());
     }
 
-    // double check put route in controller- it's either updating the wrong id or adding a new game in error
-    // status 200- it's updating the wrong id!
-
-//    @Test
-//    public void shouldReturn422StatusCodeIfIdsDoNotMatch() throws Exception {
-//        Game inputGame = new Game();
-//        inputGame.setGameId(1);
-//        inputGame.setTitle("Game of Thrones");
-//        inputGame.setEsrbRating("Mature");
-//        inputGame.setDescription("Awesome Game with numerous alternate endings.");
-//        inputGame.setPrice(new BigDecimal("14.99"));
-//        inputGame.setStudio("Warner Bros Entertainment");
-//        inputGame.setQuantity(25);
-//
-//        String inputJson = mapper.writeValueAsString(inputGame);
-//
-//        mockMvc.perform(
-//                        put("/games/2")
-//                                .content(inputJson)
-//                                .contentType(MediaType.APPLICATION_JSON)
-//                )
-//                .andDo(print())
-//                .andExpect(status().isUnprocessableEntity());
-//    }
 
 }
