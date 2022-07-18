@@ -148,6 +148,13 @@ public class ServiceLayer {
         return tshirtRepository.save(tshirt);
     }
 
+    public void updateTshirt(Tshirt tshirt){
+        tshirtRepository.save(tshirt);
+    }
+
+
+
+
     public List<Tshirt> getAllTShirts(String color, String size){
         if (color != null) {
             return tshirtRepository.findByColor(color);

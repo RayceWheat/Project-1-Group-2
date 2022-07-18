@@ -15,15 +15,9 @@ function TshirtForm({tshirt: initialTshirt, notify}) {
 
         console.log(tshirt);
 
-        console.log(tshirt.id);
-
-        console.log("Handle Submit has been called");
-
         const url = "http://localhost:8080/tshirt";
         const method = isAdd ? "POST" : "PUT";
         const expectedStatus = isAdd ? 201 : 204;
-
-        
 
         const init = {
             method,
@@ -68,6 +62,7 @@ function TshirtForm({tshirt: initialTshirt, notify}) {
                 <div className="mb-3">
                     <label htmlFor="color">Color</label>
                     <select name="color" value={tshirt.color} onChange={handleChange}>
+                        <option>Pick your color</option>
                         <option value="red">Red</option>
                         <option value="gold">Gold</option>
                         <option value="camouflage">Camouflage</option>
@@ -78,6 +73,7 @@ function TshirtForm({tshirt: initialTshirt, notify}) {
                 <div className="mb-3">
                     <label htmlFor="size">Size</label>
                     <select name="size" value={tshirt.size} onChange={handleChange}>
+                        <option>Pick your size</option>
                         <option value="s">small</option>
                         <option value="m">medium</option>
                         <option value="l">large</option>
