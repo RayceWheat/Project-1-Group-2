@@ -288,6 +288,8 @@ public class ServiceLayer {
 
        System.out.println(ivm.getSubtotal());
 
+
+
        Optional<ProcessingFees> processingFeesOptional = processingFeeRepository.findById(ivm.getItemType());
 
        ivm.setProcessingFee(processingFeesOptional.get().getFee());
@@ -296,7 +298,9 @@ public class ServiceLayer {
            ivm.setProcessingFee(ivm.getProcessingFee().add(new BigDecimal("15.49")));
        }
 
-       ivm.setTotal(ivm.getSubtotal().add(ivm.getProcessingFee()));
+       BigDecimal taxTotal = taxAmount.add(originalSubTotal);
+
+       ivm.setTotal(taxTotal.add(ivm.getProcessingFee()));
 
 
        Invoice invoice = new Invoice();
@@ -325,6 +329,11 @@ public class ServiceLayer {
 
        return ivm;
 
+   }
+
+   @Override
+   public void updateInvoice(InvoiceViewModel ivm){
+        invoiceRepository.save(ivm);
    }
 
     public List<InvoiceViewModel> getAllInvoices(){

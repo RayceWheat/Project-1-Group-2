@@ -2,13 +2,13 @@ function InvoiceCard({ invoice, notify }) {
 
     function handleDelete(){
         console.log("Delete has been called");
-        fetch(`http://localhost:8080/invoices/${invoice.invoiceId}`, {method: "DELETE"})
+        fetch(`http://localhost:8080/invoice/${invoice.invoiceId}`, {method: "DELETE"})
             .then(() => notify({ action: "delete", invoices: invoice}))
             .catch(error => notify({ action: "delete", error: error}));
     }
 
     return(
-        <tr key={invoice.name}>
+        <tr key={invoice.invoiceId}>
             <td>{invoice.name}</td>
             <td>{invoice.street}</td>
             <td>{invoice.city}</td>
