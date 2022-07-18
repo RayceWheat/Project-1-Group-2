@@ -63,6 +63,51 @@ public class Invoice implements Serializable {
 //    @NotNull
     private BigDecimal total;
 
+    public Invoice(Integer invoiceId, String name, String street, String city, String state, String zipCode, String itemType, Integer quantity, Integer itemId, BigDecimal unitPrice, BigDecimal subtotal, BigDecimal tax, BigDecimal processingFee, BigDecimal total) {
+        this.invoiceId = invoiceId;
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.itemType = itemType;
+        this.quantity = quantity;
+        this.itemId = itemId;
+        this.unitPrice = unitPrice;
+        this.subtotal = subtotal;
+        this.tax = tax;
+        this.processingFee = processingFee;
+        this.total = total;
+    }
+
+    public Invoice(String name, String street, String city, String state, String zipCode, String itemType, Integer quantity, Integer itemId, BigDecimal unitPrice) {
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.itemType = itemType;
+        this.quantity = quantity;
+        this.itemId = itemId;
+        this.unitPrice = unitPrice;
+    }
+
+    public Invoice() {
+    }
+
+    public Invoice(Integer invoiceId, String name, String street, String city, String state, String zipCode, String itemType, Integer quantity, Integer itemId, BigDecimal unitPrice) {
+        this.invoiceId = invoiceId;
+        this.name = name;
+        this.street = street;
+        this.city = city;
+        this.state = state;
+        this.zipCode = zipCode;
+        this.itemType = itemType;
+        this.quantity = quantity;
+        this.itemId = itemId;
+        this.unitPrice = unitPrice;
+    }
+
     public Integer getInvoiceId() {
         return invoiceId;
     }
