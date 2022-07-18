@@ -71,7 +71,7 @@ function Consoles() {
 
     function titleClick(event){       
         event.preventDefault();
-        if(document.getElementById("manufacturer").value == ""){
+        if(document.getElementById("manufacturer").value === ""){
             setConsoles([]);
         } else {
             fetch(`http://localhost:8080/consoles/manufacturer?manufacturer=${document.getElementById("manufacturer").value}`)

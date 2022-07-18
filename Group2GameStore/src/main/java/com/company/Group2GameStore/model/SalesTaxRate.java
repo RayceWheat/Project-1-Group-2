@@ -3,6 +3,7 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,8 +20,17 @@ public class SalesTaxRate implements Serializable {
     @NotEmpty
     private String state;
 
-
+    @DecimalMin("0.01")
+    @NotNull
     private BigDecimal rate;
+
+    public SalesTaxRate(String state, BigDecimal rate) {
+        this.state = state;
+        this.rate = rate;
+    }
+
+    public SalesTaxRate() {
+    }
 
     public String getState() {
         return state;
