@@ -19,10 +19,10 @@ public class Console {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty
+    @NotEmpty(message = "Model must not be empty")
     private String model;
 
-    @NotEmpty
+    @NotEmpty(message = "Manufacturer must not be empty")
     private String manufacturer;
 
     @NotEmpty

@@ -52,10 +52,10 @@ public class ServiceLayer {
     public Console getConsoleById(int id){
         Optional<Console> returnVal = consoleRepository.findById(id);
 
-        if (returnVal.isPresent()) {
-            return returnVal.get();
-        } else {
+        if (returnVal.get() == null) {
             throw new NotFoundException("Console not found in database");
+        } else {
+            return returnVal.get();
         }
     }
 
