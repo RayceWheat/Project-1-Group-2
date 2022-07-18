@@ -3,6 +3,7 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -18,18 +19,22 @@ public class Tshirt {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer tShirtId;
 
-//    @NotEmpty
+    @NotEmpty(message = "Tshirt must not be empty")
     private String tshirt;
-//    @NotEmpty
+
+    @NotEmpty(message = "Color must not be empty")
     private String color;
-//    @NotEmpty
+
+    @NotEmpty(message = "Size must not be empty")
     private String size;
 
-//    @NotEmpty
+    @NotEmpty(message = "Description must not be empty")
     private String description;
-//    @NotNull
+
+    @Min(value = 1, message = "Price must be at least 1")
     private BigDecimal price;
-//    @NotNull
+
+    @Min(value = 1, message = "Quantity must be at least 1")
     private Integer quantity;
 
     public Integer gettShirtId() {

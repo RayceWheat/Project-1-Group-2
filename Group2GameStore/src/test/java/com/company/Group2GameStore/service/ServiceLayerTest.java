@@ -30,6 +30,7 @@ public class ServiceLayerTest {
     ProcessingFeeRepository processingFeeRepository;
     InvoiceRepository invoiceRepository;
 
+
     @MockBean
     ServiceLayer service;
 
@@ -77,6 +78,7 @@ public class ServiceLayerTest {
         doReturn(gameList).when(gameRepository).findGamesByEsrbRating("Mature");
         doReturn(gameList).when(gameRepository).findGamesByTitle("Game of Thrones X");
     }
+
 
     private void setUpConsoleRepositoryMock() {
         consoleRepository = mock(ConsoleRepository.class);
