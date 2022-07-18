@@ -19,23 +19,23 @@ public class Console {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
-    @NotEmpty
+    @NotEmpty(message = "Model must not be empty")
     private String model;
 
-    @NotEmpty
+    @NotEmpty(message = "Manufacturer must not be empty")
     private String manufacturer;
 
-    @NotEmpty
+    @NotEmpty(message = "Memory amount must not be empty")
     @Column(name = "memory_amount")
     private String memoryAmount;
 
-    @NotEmpty
+    @NotEmpty(message = "Processor must not be empty")
     private String processor;
 
-    @DecimalMin(value = "00.01")
+    @DecimalMin(value = "00.01", message = "You can't have 0 price!")
     private BigDecimal price;
 
-    @Min(value = 0)
+    @Min(value = 1, message = "You can't have 0 quantity!")
     private int quantity;
 
     public int getId() {
