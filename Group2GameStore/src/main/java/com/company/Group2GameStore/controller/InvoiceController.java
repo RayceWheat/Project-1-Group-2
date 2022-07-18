@@ -47,7 +47,7 @@ public class InvoiceController {
 
     @RequestMapping(value = "/invoice", method = RequestMethod.PUT)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void updateInvoice(@RequestBody InvoiceViewModel ivm) {
+    public void updateInvoice(@RequestBody Invoice ivm) {
         serviceLayer.updateInvoice(ivm);
     }
 

@@ -327,9 +327,9 @@ public class ServiceLayer {
 
    }
 
-   @Override
-   public void updateInvoice(InvoiceViewModel ivm){
-        invoiceRepository.save(ivm);
+
+   public void updateInvoice(Invoice invoice){
+        invoiceRepository.save(invoice);
    }
 
     public List<InvoiceViewModel> getAllInvoices(){
