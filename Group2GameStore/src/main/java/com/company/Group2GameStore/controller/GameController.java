@@ -21,8 +21,26 @@ public class GameController {
 
     @RequestMapping(value = "/games", method = RequestMethod.GET)
     @ResponseStatus(HttpStatus.OK)
-    public List<Game> getAllGames(@RequestParam(required=false) String studio, @RequestParam(required=false) String esrbRating, @RequestParam(required=false) String title) {
-        return serviceLayer.getAllGames(studio, esrbRating, title);
+    public List<Game> getAllGames() {
+        return serviceLayer.getAllGames();
+    }
+
+    @RequestMapping(value = "/games/title", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> getGamesByTitle(String title) {
+        return serviceLayer.getGamesByTitle(title);
+    }
+
+    @RequestMapping(value = "/games/esrbRating", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> getGamesByEsrbRating(String esrbRating) {
+        return serviceLayer.getGamesByEsrbRating(esrbRating);
+    }
+
+    @RequestMapping(value = "/games/studio", method = RequestMethod.GET)
+    @ResponseStatus(HttpStatus.OK)
+    public List<Game> getGamesByStudio(String studio) {
+        return serviceLayer.getGamesByTitle(studio);
     }
 
     // create game

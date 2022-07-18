@@ -43,6 +43,7 @@ public class ServiceLayer {
         this.tshirtRepository = tshirtRepository;
     }
 
+
     @Transactional
 
     public List<Console> getAllConsoles(){
@@ -90,17 +91,20 @@ public class ServiceLayer {
         consoleRepository.deleteById(id);
     }
 
-    public List<Game> getAllGames(String studio, String esrbRating, String title){
-        if (studio != null) {
-            return gameRepository.findGamesByStudio(studio);
-        }
-        if (esrbRating != null) {
-            return gameRepository.findGamesByEsrbRating(esrbRating);
-        }
-        if (title != null) {
-            return gameRepository.findGamesByTitle(title);
-        }
+    public List<Game> getAllGames(){
         return gameRepository.findAll();
+    }
+
+    public List<Game> getGamesByTitle(String title){
+        return gameRepository.findGamesByTitle(title);
+    }
+
+    public List<Game> getGamesByEsrbRating(String esrbRating){
+        return gameRepository.findGamesByEsrbRating(esrbRating);
+    }
+
+    public List<Game> getGamesByStudio(String studio){
+        return gameRepository.findGamesByStudio(studio);
     }
 
     public Game addGame(Game game){
