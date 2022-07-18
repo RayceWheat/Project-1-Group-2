@@ -1,6 +1,6 @@
 function TshirtRowCard({tshirt, notify}) {
     function handleDelete() {
-        fetch( `http://localhost:8080/tshirt/${tshirt.tshirtId}`, {method: "DELETE"})
+        fetch( `http://localhost:8080/tshirt/${tshirt.tShirtId}`, {method: "DELETE"})
         .then(() => notify({ action: "delete", tshirt: tshirt }))
         .catch(error => notify({action: "delete", error: error}))
     }   

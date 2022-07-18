@@ -55,7 +55,7 @@ function Tshirts() {
                 break;
             case "edit":
                 setTshirts(tshirts.map(e => {
-                    if (tshirt.tshirtId === e.tshirtId) {
+                    if (tshirt.tShirtId === e.tShirtId) {
                         return tshirt;
                     }
                     return e;
@@ -66,7 +66,7 @@ function Tshirts() {
                 setShowForm(true);
                 return;
             case "delete":
-                setTshirts(tshirts.filter(e=> tshirt.tshirtId !==  e.tshirtId))
+                setTshirts(tshirts.filter(e=> tshirt.tShirtId !==  e.tShirtId))
                 break;
         }
         setError("");
