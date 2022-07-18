@@ -102,7 +102,7 @@ public class GameControllerTest {
 
     @Test
     public void shouldReturnGameById() throws Exception {
-        //Optional<Game> optGame = Optional.of(game);
+
         doReturn(game).when(serviceLayer).findGameById(1);
 
         mockMvc.perform(
@@ -195,10 +195,11 @@ public class GameControllerTest {
 
     @Test
     public void shouldReturn422StatusCodeIfGameNotFound() throws Exception {
-        mockMvc.perform(get("/games/tennis"))
+
+        mockMvc.perform(get("/games/Tennis"))
+
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
-
 
 }
