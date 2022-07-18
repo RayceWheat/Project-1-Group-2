@@ -100,6 +100,8 @@ public class ConsoleControllerTest {
 
     @Test
     public void shouldReturnAllConsoles() throws Exception {
+        doReturn(allConsoles).when(serviceLayer).getAllConsoles();
+
         mockMvc.perform(get("/consoles"))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -122,35 +124,9 @@ public class ConsoleControllerTest {
     }
 
     @Test
-    public void shouldReturn422StatusCodeIfIdsDoNotMatch() throws Exception{
-        Console console1 = new Console();
-        console1.setModel("Switch");
-        console1.setManufacturer("Nintendo");
-        console1.setMemoryAmount("256gb");
-        console1.setProcessor("NotAGoodOne");
-        console1.setPrice(new BigDecimal("199.99"));
-        console1.setQuantity(5);
-        console1.setId(2);
-
-        Optional<Console> optConsole = Optional.of(console1);
-        Console console2 = Mockito.mock(Console.class);
-        doReturn(console2).when(serviceLayer).getConsoleById(2);
-
-        String inputJson = mapper.writeValueAsString(console1);
-
-        mockMvc.perform(
-                        put("/consoles/5")
-                                .content(inputJson)
-                                .contentType(MediaType.APPLICATION_JSON)
-                )
-                .andDo(print())
-                .andExpect(status().isUnprocessableEntity());
-    }
-
-    @Test
     public void shouldReturnConsoleById() throws Exception{
-        Optional<Console> optConsole = Optional.of(console);
-        doReturn(optConsole).when(serviceLayer).getConsoleById(11);
+        //Optional<Console> optConsole = Optional.of(console);
+        doReturn(console).when(serviceLayer).getConsoleById(11);
 
         mockMvc.perform(
                 get("/consoles/11"))
@@ -166,25 +142,25 @@ public class ConsoleControllerTest {
         doReturn(allConsoles).when(serviceLayer).getConsoleByManufacturer("Sony");
 
         mockMvc.perform(
-                get("/consoles/manufacturer/Sony"))
+                    get("/consoles/manufacturer?manufacturer=Sony"))
                 .andExpect(status().isOk())
                 .andExpect((content().json(allConsoleJson))
         );
     }
 
-//    @Test
-//    public void shouldReturn422IfManufacturerIsNotThere() throws Exception{
-//        mockMvc.perform(
-//                        get("/consoles/manufacturer/Harley"))
-//                .andExpect(status().isUnprocessableEntity());
-//
-//    }
+    @Test
+    public void shouldReturn400IfManufacturerIsNotThere() throws Exception{
+        mockMvc.perform(
+                        get("/consoles/manufacturer?=manufacturerHarley"))
+                .andExpect(status().isBadRequest());
+
+    }
 
     @Test
-    public void shouldReturn404StatusCodeIfConsoleNotFound() throws Exception{
-        mockMvc.perform(get("/consoles/-1"))
+    public void shouldReturn422StatusCodeIfConsoleNotFound() throws Exception{
+        mockMvc.perform(get("/consoles/Snmeakers"))
                 .andDo(print())
-                .andExpect(status().isNotFound());
+                .andExpect(status().isUnprocessableEntity());
     }
 
 
@@ -209,8 +185,7 @@ public class ConsoleControllerTest {
         console1.setQuantity(5);
         console1.setId(2);
 
-        Optional<Console> optConsole = Optional.of(console1);
-        doReturn(optConsole).when(serviceLayer).getConsoleById(2);
+        doReturn(console1).when(serviceLayer).getConsoleById(2);
 
         String inputJson = mapper.writeValueAsString(console1);
 

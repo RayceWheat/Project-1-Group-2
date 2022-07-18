@@ -1,17 +1,13 @@
 package com.company.Group2GameStore.service;
 
-import com.company.Group2GameStore.controller.TshirtController;
 import com.company.Group2GameStore.exceptions.NotFoundException;
 import com.company.Group2GameStore.model.*;
 import com.company.Group2GameStore.repository.*;
 import com.company.Group2GameStore.viewmodel.InvoiceViewModel;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.*;
 
 import javax.transaction.Transactional;
-import javax.validation.Valid;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -90,6 +86,7 @@ public class ServiceLayer {
         consoleRepository.deleteById(id);
     }
 
+    public List<Game> getAllGames(){
         return gameRepository.findAll();
     }
 
