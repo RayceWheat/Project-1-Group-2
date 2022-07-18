@@ -35,6 +35,7 @@ public class Console {
     @DecimalMin(value = "00.01", message = "You can't have 0 price!")
     private BigDecimal price;
 
+
     @Min(value = 1, message = "You can't have 0 quantity!")
     private int quantity;
 

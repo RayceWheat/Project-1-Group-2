@@ -104,7 +104,7 @@ public class ServiceLayerTest {
         consoleList.add(console1);
 
         doReturn(console1).when(consoleRepository).save(console2);
-        doReturn(Optional.of(console1)).when(consoleRepository).findById(1);
+        doReturn(Optional.of(console1)).when(consoleRepository).findById(2);
         doReturn(consoleList).when(consoleRepository).findAll();
         doReturn(consoleList).when(consoleRepository).findConsoleByManufacturer("Nintendo");
     }
@@ -217,6 +217,14 @@ public class ServiceLayerTest {
     }
 
     @Test
+    public void findAllConsolesByManufacturer(){
+        List<Console> consoleSearch = service.getConsoleByManufacturer("Nintendo");
+
+        assertEquals(1, consoleSearch.size());
+    }
+
+    
+    @Test
     public void findAllTshirts() {
         List<Tshirt> tshirtSearch = service.getAllTShirts();
 
@@ -253,6 +261,21 @@ public class ServiceLayerTest {
         assertEquals(game, fromService);
     }
 
+
+    @Test
+    public void saveFindConsole() {
+        Console console1 = new Console();
+        console1.setModel("Switch");
+        console1.setManufacturer("Nintendo");
+        console1.setMemoryAmount("256gb");
+        console1.setProcessor("NotAGoodOne");
+        console1.setPrice(new BigDecimal("199.99"));
+        console1.setQuantity(5);
+        console1.setId(2);
+
+        Console fromService = service.getConsoleById(console1.getId());
+        assertEquals(console1, fromService);
+    }
 
     @Test
     public void saveFindTshirt() {
