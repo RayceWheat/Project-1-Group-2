@@ -43,6 +43,8 @@ public class ServiceLayer {
         this.tshirtRepository = tshirtRepository;
     }
 
+
+    // Console sections
     @Transactional
 
     public List<Console> getAllConsoles(){
@@ -89,6 +91,8 @@ public class ServiceLayer {
     public void deleteConsoleById(int id){
         consoleRepository.deleteById(id);
     }
+
+    // Game section
 
     public List<Game> getAllGames(String studio, String esrbRating, String title){
         if (studio != null) {
@@ -140,6 +144,8 @@ public class ServiceLayer {
         gameRepository.deleteById(id);
     }
 
+    //T-shirt section
+
     public Tshirt createTShirt(Tshirt tshirt){
         return tshirtRepository.save(tshirt);
     }
@@ -180,6 +186,7 @@ public class ServiceLayer {
         tshirtRepository.deleteById(id);
    }
 
+   //In voice section
 
    public InvoiceViewModel getInvoiceById(int id){
         Optional<Invoice> invoice = invoiceRepository.findById(id);

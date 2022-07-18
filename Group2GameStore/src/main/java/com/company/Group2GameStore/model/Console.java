@@ -35,7 +35,7 @@ public class Console {
     @DecimalMin(value = "00.01")
     private BigDecimal price;
 
-    @Min(value = 0)
+    @Min(value = 1)
     private int quantity;
 
     public int getId() {
