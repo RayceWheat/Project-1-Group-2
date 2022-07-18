@@ -214,6 +214,14 @@ public class ServiceLayerTest {
     }
 
     @Test
+    public void findAllConsolesByManufacturer(){
+        List<Console> consoleSearch = service.getConsoleByManufacturer("Nintendo");
+
+        assertEquals(1, consoleSearch.size());
+    }
+
+    
+    @Test
     public void findAllTshirts() {
         List<Game> gameSearch = service.getAllGames();
 
