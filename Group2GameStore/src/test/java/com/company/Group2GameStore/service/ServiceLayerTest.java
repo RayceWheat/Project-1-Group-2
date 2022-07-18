@@ -15,15 +15,15 @@ public class ServiceLayerTest {
     ProcessingFeeRepository processingFeeRepository;
     InvoiceRepository invoiceRepository;
 
-    @Before
-    public void setUp() throws Exception {
-        setUpAlbumRepositoryMock();
-        setUpArtistRepositoryMock();
-        setUpLabelRepositoryMock();
-        setUpTrackRepositoryMock();
-
-        service = new ServiceLayer(albumRepository, artistRepository, labelRepository, trackRepository);
-
-    }
+//    @Before
+//    public void setUp() throws Exception {
+//        setUpAlbumRepositoryMock();
+//        setUpArtistRepositoryMock();
+//        setUpLabelRepositoryMock();
+//        setUpTrackRepositoryMock();
+//
+//        service = new ServiceLayer(albumRepository, artistRepository, labelRepository, trackRepository);
+//
+//    }
 
 }

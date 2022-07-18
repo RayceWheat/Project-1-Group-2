@@ -3,6 +3,8 @@ package com.company.Group2GameStore.model;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 import javax.persistence.*;
+import javax.validation.constraints.DecimalMin;
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import java.io.Serializable;
@@ -19,48 +21,46 @@ public class Invoice implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer invoiceId;
 
-    //    @NotEmpty
+    @NotEmpty(message = "Name must not be empty")
     private String name;
 
-    //    @NotEmpty
+    @NotEmpty(message = "Street must not be empty")
     private String street;
-//    @NotEmpty
+
+    @NotEmpty(message = "City must not be empty")
     private String city;
-//    @NotEmpty
+
+    @NotEmpty(message = "State must not be empty")
     private String state;
-//    @NotEmpty
+
+    @NotEmpty(message = "Zip Code must not be empty")
     private String zipCode;
-//    @NotEmpty
-    //can only be Tshirt Game or Console
+
+
+    @NotEmpty(message = "Item type must not be empty")
     private String itemType;
 
-    //    @NotNull
+    @Min(value = 1, message = "Quantity must be above 0")
     private Integer quantity;
 
-    //call itemid on processing fees repo
-//    @NotNull
+
+    @NotNull
     private Integer itemId;
-//    @NotNull
-    //math
+
+    @DecimalMin(value = "00.01", message = "You can't have 0 price!")
     private BigDecimal unitPrice;
 
 
-//    @NotNull
+    @NotNull
     private BigDecimal subtotal;
 
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "")
-//    @NotNull
+    @NotNull
     private BigDecimal tax;
-//    private Set<Tax> taxes = new HashSet<>();
 
-//    @OneToMany(cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
-//    @JoinColumn(name = "")
-//    @NotNull
+    @NotNull
     private BigDecimal processingFee;
-    //    private Set<ProcessingFee> processingfees = new HashSet<>();
 
-//    @NotNull
+    @NotNull
     private BigDecimal total;
 
     public Invoice(Integer invoiceId, String name, String street, String city, String state, String zipCode, String itemType, Integer quantity, Integer itemId, BigDecimal unitPrice, BigDecimal subtotal, BigDecimal tax, BigDecimal processingFee, BigDecimal total) {

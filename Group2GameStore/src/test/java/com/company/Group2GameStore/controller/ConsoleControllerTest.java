@@ -36,7 +36,6 @@ public class ConsoleControllerTest {
     @Autowired
     private MockMvc mockMvc;
 
-
     @MockBean
     ServiceLayer serviceLayer;
 
@@ -96,6 +95,14 @@ public class ConsoleControllerTest {
                     .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isCreated())
                 .andExpect(content().json(consoleJson));
+    }
+
+    @Test
+    public void shouldReturnAllConsoles() throws Exception {
+        mockMvc.perform(get("/consoles"))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().json(allConsoleJson));
     }
 
     @Test

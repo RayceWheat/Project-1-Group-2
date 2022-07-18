@@ -22,25 +22,25 @@ public class Game implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer gameId;
 
-    @NotEmpty
+    @NotEmpty(message = "Title must not be empty")
     private String title;
 
-    @NotEmpty
+    @NotEmpty(message = "ESRB rating must not be empty")
     @Column(name = "esrb_rating")
     private String esrbRating;
 
-    @NotEmpty
+    @NotEmpty(message = "Description must not be empty")
     private String description;
 
     @DecimalMin("1.00")
-    @NotNull
+    @NotNull(message = "Price can't be less than 1")
     private BigDecimal price;
 
-    @NotEmpty
+    @NotEmpty(message = "Studio must not be empty")
     private String studio;
 
     @Min(value=0)
-    @NotNull
+    @NotNull(message = "Quantity must be more than 0!")
     private Integer quantity;
 
     public Game(Integer gameId, String title, String esrbRating, String description, BigDecimal price, String studio, Integer quantity) {
