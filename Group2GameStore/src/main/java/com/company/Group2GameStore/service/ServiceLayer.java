@@ -231,6 +231,7 @@ public class ServiceLayer {
                } else {
                    foundGame.get().setQuantity(foundGame.get().getQuantity() - ivm.getQuantity());
                    gameRepository.save(foundGame.get());
+                   ivm.setUnitPrice(foundGame.get().getPrice());
                }
                break;
            case "T-shirts":
@@ -240,6 +241,7 @@ public class ServiceLayer {
                } else {
                    foundTshirt.get().setQuantity(foundTshirt.get().getQuantity() - ivm.getQuantity());
                    tshirtRepository.save(foundTshirt.get());
+                   ivm.setUnitPrice((foundTshirt.get().getPrice()));
                }
                break;
            case "Consoles":
@@ -249,6 +251,7 @@ public class ServiceLayer {
                } else {
                    foundConsole.get().setQuantity(foundConsole.get().getQuantity() - ivm.getQuantity());
                    consoleRepository.save(foundConsole.get());
+                   ivm.setUnitPrice(foundConsole.get().getPrice());
                }
                break;
            default:

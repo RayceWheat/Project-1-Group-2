@@ -30,44 +30,13 @@ function Consoles() {
         fetch("http://localhost:8080/consoles")
         .then(r => r.json())
         .then(result => setConsoles(result))
-        .catch(consoles.log)
+        .catch(console.log)
     }, []);
 
     function addClick() {
         setScopedConsole({ id: 0, model: "", manufacturer: "", memoryAmount: "", processor: "", price: 0, quantity: 0});
         setShowForm(true);
     }
-
-    // function fetchByManufacturer(evt){
-    //     evt.preventDefault();
-
-    //     console.log(evt.target.value);
-
-    //     if (evt.target.value === "") {
-    //         setConsoles([]);
-    //     } else {
-    //         fetch("http://localhost:8080/consoles/manufacturer?manufacturer" + evt.target.value)
-    //             .then(response => response.json())
-    //             .then(result => setConsoles(result))
-    //             .catch(console.log);
-    //     }
-    //   }
-
-
-    //   function handleChange(evt){
-    //     const clone = {...console };
-    //     clone[evt.target.name] = evt.target.value;
-    //     //setConsole(clone);
-    // }
-
-    // function handleChange(evt) {
-    //     this.setState({value: evt.target.value});
-    //   }
-    
-    // function handleSubmit(evt) {
-    //     alert('A name was submitted: ' + this.state.value);
-    //     evt.preventDefault();
-    //   }
 
     function titleClick(event){       
         event.preventDefault();
