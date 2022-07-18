@@ -103,7 +103,7 @@ public class GameControllerTest {
     @Test
     public void shouldReturnGameById() throws Exception {
         Optional<Game> optGame = Optional.of(game);
-        doReturn(optGame).when(serviceLayer).findGameById(1);
+        doReturn(game).when(serviceLayer).findGameById(1);
 
         mockMvc.perform(
                         get("/games/1"))
@@ -157,18 +157,18 @@ public class GameControllerTest {
     }
 
     @Test
-    public void shouldUpdateGameAndReturnStatus200() throws Exception {
+    public void shouldUpdateGameAndReturnStatus204() throws Exception {
         mockMvc.perform(
                         put("/games/1")
                                 .content(gameJson)
                                 .contentType(MediaType.APPLICATION_JSON)
                 )
-                .andExpect(status().isOk());
+                .andExpect(status().isNoContent());
     }
 
     @Test
-    public void shouldDeleteGameByIdAndReturn200StatusCode() throws Exception {
-        mockMvc.perform(delete("/games/2")).andExpect(status().isOk());
+    public void shouldDeleteGameByIdAndReturn204StatusCode() throws Exception {
+        mockMvc.perform(delete("/games/2")).andExpect(status().isNoContent());
     }
 
     @Test
@@ -195,10 +195,9 @@ public class GameControllerTest {
 
     @Test
     public void shouldReturn422StatusCodeIfGameNotFound() throws Exception {
-        mockMvc.perform(get("/games/0"))
+        mockMvc.perform(get("/games/Tennis"))
                 .andDo(print())
                 .andExpect(status().isUnprocessableEntity());
     }
-
 
 }

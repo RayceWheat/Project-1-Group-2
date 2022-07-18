@@ -26,19 +26,6 @@ public class SalesTaxRepositoryTest {
     }
 
     @Test
-    public void addGetDeleteSalesTax() {
-        SalesTaxRate testTax = new SalesTaxRate();
-
-        testTax.setState("CT");
-        testTax.setRate(new BigDecimal("0.03"));
-
-//        assertEquals(true, taxRepo.existsById(testTax.getState()));
-
-        taxRepo.deleteById(testTax.getState());
-        assertEquals(false, taxRepo.existsById(testTax.getState()));
-    }
-
-    @Test
     public void getAllTaxRates() {
         taxRepo.save(new SalesTaxRate("MA", new BigDecimal("0.05")));
         taxRepo.save(new SalesTaxRate("NV", new BigDecimal("0.03")));

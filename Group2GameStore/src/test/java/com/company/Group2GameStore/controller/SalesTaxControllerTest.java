@@ -41,17 +41,11 @@
 //
 //    @Before
 //    public void setup() throws Exception {
-//        taxRate = new SalesTaxRate();
-//        taxRate.setTaxId(1);
-//        taxRate.setState("CT");
-//        taxRate.setRate(new BigDecimal("0.03"));
+//        taxRate = new SalesTaxRate("CT", new BigDecimal("0.03"));
 //
 //        taxJson = mapper.writeValueAsString(taxRate);
 //
-//        SalesTaxRate taxRate2 = new SalesTaxRate();
-//        taxRate2.setTaxId(2);
-//        taxRate2.setState("MA");
-//        taxRate2.setRate(new BigDecimal("0.05"));
+//        SalesTaxRate taxRate2 = new SalesTaxRate("MA", new BigDecimal("0.05"));
 //
 //        allTaxes.add(taxRate);
 //        allTaxes.add(taxRate2);
@@ -66,28 +60,6 @@
 //
 //        mockMvc.perform(
 //                        get("/tax"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(allTaxesJson)
-//                );
-//    }
-//
-//    @Test
-//    public void shouldReturnTaxRateByState() throws Exception {
-//        doReturn(allTaxes).when(taxRepo).findTaxByState("CT");
-//
-//        mockMvc.perform(
-//                        get("/tax?state=CT"))
-//                .andExpect(status().isOk())
-//                .andExpect(content().json(allTaxesJson)
-//                );
-//    }
-//
-//    @Test
-//    public void shouldReturnTaxRate() throws Exception {
-//        doReturn(allTaxes).when(taxRepo).findTaxByRate(new BigDecimal("0.03"));
-//
-//        mockMvc.perform(
-//                        get("/tax?rate=0.03"))
 //                .andExpect(status().isOk())
 //                .andExpect(content().json(allTaxesJson)
 //                );
