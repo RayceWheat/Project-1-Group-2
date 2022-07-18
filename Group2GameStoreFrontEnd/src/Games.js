@@ -120,10 +120,10 @@ function Games() {
                 <select name="esrbRating" onChange={fetchByEsrbRating}>
                     <option value="">Get Games by ESRB Rating</option>
                     <option value="Everyone">Everyone</option>
-                    <option value="Everyone 10+">Everyone 10+</option>
+                  {/* //  <option value="Everyone 10+">Everyone 10+</option> */}
                     <option value="Teen">Teen</option>
-                    <option value="Mature 17+">Mature 17+</option>
-                    <option value="Adults Only 18+">Adults Only 18+</option>
+                    <option value="Mature">Mature</option>
+                    <option value="Adults Only">Adults Only</option>
                     <option value="Rating Pending">Rating Pending</option>
                 </select>
             </div>

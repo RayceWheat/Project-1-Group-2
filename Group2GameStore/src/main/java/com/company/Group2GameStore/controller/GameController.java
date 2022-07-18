@@ -42,14 +42,14 @@ public class GameController {
 
     // update a game
     @RequestMapping(value = "/games", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
 
     public void updateGame(@RequestBody @Valid Game game) {
         serviceLayer.updateGame(game);
     }
 
     @RequestMapping(value = "/games/{id}", method = RequestMethod.PUT)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public Game updateGameById(@PathVariable int id, @RequestBody @Valid Game game){
         return serviceLayer.updateGameById(id, game);
     }
@@ -57,7 +57,7 @@ public class GameController {
 
     // delete game
     @RequestMapping(value = "/games/{id}", method = RequestMethod.DELETE)
-    @ResponseStatus(HttpStatus.OK)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deleteGameById(@PathVariable int id) {
         serviceLayer.deleteGameById(id);
     }

@@ -44,6 +44,14 @@ public class InvoiceController {
     public void updateInvoiceById(@PathVariable int id, @RequestBody InvoiceViewModel ivm) {
         serviceLayer.updateInvoiceById(ivm);
     }
+
+    @RequestMapping(value = "/invoice", method = RequestMethod.PUT)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void updateInvoice(@RequestBody InvoiceViewModel ivm) {
+        serviceLayer.updateInvoice(ivm);
+    }
+
+
 //
 //    //Delete by id
     @RequestMapping(value = "/invoice/{id}", method = RequestMethod.DELETE)
